@@ -312,18 +312,20 @@ export const MemberDirectorySection: React.FC<MemberDirectorySectionProps> = ({
         </div>
       </div>
 
-      {/* Member Digital Passbook Modal */}
+      {/* Member Digital Passbook Modal in Tactile Cream-White / Warm-Gray */}
       {selectedMember && (
-        <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#0B1120] border border-blue-900/60 rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl text-white">
-            <div className="bg-slate-950 p-4 border-b border-slate-800 flex items-center justify-between">
+        <div className="fixed inset-0 z-50 bg-stone-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-[#FCFAF7] border border-[#E7E2DA] rounded-3xl max-w-lg w-full overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.18)] text-stone-900">
+            <div className="bg-[#F6F3EC] p-5 border-b border-[#ECE7DE] flex items-center justify-between">
               <div className="flex items-center gap-2.5">
-                <DhammaChakraIcon size={22} className="text-amber-400" />
+                <div className="w-8 h-8 rounded-xl bg-amber-100 border border-amber-300 flex items-center justify-center text-amber-800 shadow-2xs">
+                  <DhammaChakraIcon size={20} />
+                </div>
                 <div>
-                  <h3 className="text-sm font-extrabold text-white">
+                  <h3 className="text-sm font-extrabold text-stone-900">
                     {t(lang, 'Constitutional Digital Passbook', 'संवैधानिक डिजिटल पासबुक')}
                   </h3>
-                  <p className="text-[11px] text-amber-300 font-mono-tabular">
+                  <p className="text-[11px] text-amber-800 font-mono-tabular font-bold">
                     {selectedMember.member_id}
                   </p>
                 </div>
@@ -331,62 +333,62 @@ export const MemberDirectorySection: React.FC<MemberDirectorySectionProps> = ({
               <button
                 type="button"
                 onClick={() => setSelectedMember(null)}
-                className="p-1 text-slate-400 hover:text-white cursor-pointer"
+                className="p-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-600 hover:text-stone-900 transition-all cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <div className="p-6 space-y-4">
-              <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+              <div className="flex items-center justify-between border-b border-[#ECE7DE] pb-3">
                 <div>
-                  <h4 className="text-lg font-extrabold text-white">
+                  <h4 className="text-lg font-extrabold text-stone-900">
                     {selectedMember.full_name}
                   </h4>
-                  <p className="text-xs text-slate-300">
+                  <p className="text-xs text-stone-600 font-medium">
                     {lang === 'en'
                       ? selectedMember.designation.split('·')[0].trim()
                       : (selectedMember.designation.split('·')[1] || selectedMember.designation).trim()}
                   </p>
                 </div>
-                <span className="w-9 h-9 rounded-xl bg-blue-950 border border-blue-800 text-amber-400 font-extrabold text-sm flex items-center justify-center">
+                <span className="w-10 h-10 rounded-2xl bg-amber-100 border border-amber-300 text-amber-900 font-extrabold text-sm flex items-center justify-center shadow-2xs">
                   {selectedMember.cadre}
                 </span>
               </div>
 
               <div className="grid grid-cols-2 gap-3 text-xs">
-                <div className="p-3 rounded-xl bg-slate-950 border border-slate-800/80">
-                  <span className="text-slate-400 block mb-0.5">{t(lang, 'District:', 'जिला:')}</span>
-                  <span className="font-extrabold text-white">
+                <div className="p-3.5 rounded-2xl bg-[#F6F3EC] border border-[#ECE7DE]">
+                  <span className="text-stone-500 block mb-0.5 font-medium">{t(lang, 'District:', 'जिला:')}</span>
+                  <span className="font-extrabold text-stone-900">
                     {selectedMember.district}, {selectedMember.state}
                   </span>
                 </div>
 
-                <div className="p-3 rounded-xl bg-slate-950 border border-slate-800/80">
-                  <span className="text-slate-400 block mb-0.5">{t(lang, 'Enrolled Date:', 'जुड़ने की तिथि:')}</span>
-                  <span className="font-mono-tabular font-extrabold text-white">
+                <div className="p-3.5 rounded-2xl bg-[#F6F3EC] border border-[#ECE7DE]">
+                  <span className="text-stone-500 block mb-0.5 font-medium">{t(lang, 'Enrolled Date:', 'जुड़ने की तिथि:')}</span>
+                  <span className="font-mono-tabular font-extrabold text-stone-900">
                     {selectedMember.doj}
                   </span>
                 </div>
 
-                <div className="p-3 rounded-xl bg-slate-950 border border-slate-800/80">
-                  <span className="text-slate-400 block mb-0.5">{t(lang, 'Nominee Name:', 'वैध नॉमिनी:')}</span>
-                  <span className="font-extrabold text-amber-200">
+                <div className="p-3.5 rounded-2xl bg-[#F6F3EC] border border-[#ECE7DE]">
+                  <span className="text-stone-500 block mb-0.5 font-medium">{t(lang, 'Nominee Name:', 'वैध नॉमिनी:')}</span>
+                  <span className="font-extrabold text-stone-900">
                     {selectedMember.nominee.name} ({selectedMember.nominee.relation})
                   </span>
                 </div>
 
-                <div className="p-3 rounded-xl bg-slate-950 border border-slate-800/80">
-                  <span className="text-slate-400 block mb-0.5">{t(lang, 'Nominee Bank A/C:', 'नॉमिनी बैंक खाता:')}</span>
-                  <span className="font-mono-tabular font-extrabold text-white">
+                <div className="p-3.5 rounded-2xl bg-[#F6F3EC] border border-[#ECE7DE]">
+                  <span className="text-stone-500 block mb-0.5 font-medium">{t(lang, 'Nominee Bank A/C:', 'नॉमिनी बैंक खाता:')}</span>
+                  <span className="font-mono-tabular font-extrabold text-stone-900">
                     {selectedMember.nominee.account_number}
                   </span>
                 </div>
               </div>
 
-              <div className="p-3 rounded-xl bg-slate-950 border border-slate-800/80 flex items-center justify-between text-xs">
-                <span className="text-slate-400">{t(lang, 'Annual Trust Fee Valid Until:', 'वार्षिक व्यवस्था शुल्क वैधता:')}</span>
-                <span className="font-mono-tabular font-extrabold text-emerald-400">
+              <div className="p-3.5 rounded-2xl bg-[#F6F3EC] border border-[#ECE7DE] flex items-center justify-between text-xs">
+                <span className="text-stone-600 font-medium">{t(lang, 'Annual Trust Fee Valid Until:', 'वार्षिक व्यवस्था शुल्क वैधता:')}</span>
+                <span className="font-mono-tabular font-extrabold text-emerald-700">
                   {selectedMember.vyawastha_shulk_valid_until}
                 </span>
               </div>
@@ -394,7 +396,7 @@ export const MemberDirectorySection: React.FC<MemberDirectorySectionProps> = ({
               <button
                 type="button"
                 onClick={() => setSelectedMember(null)}
-                className="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold transition-colors cursor-pointer"
+                className="w-full py-3 rounded-2xl bg-stone-200 hover:bg-stone-300 text-stone-800 text-xs font-extrabold transition-all cursor-pointer shadow-xs active:scale-98"
               >
                 {t(lang, 'Close Passbook', 'पासबुक बंद करें')}
               </button>

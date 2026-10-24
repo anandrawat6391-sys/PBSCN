@@ -7,14 +7,12 @@ import {
   Building2,
   QrCode,
   FileCheck2,
-  Search,
-  ArrowUpRight,
   Users,
-  HeartHandshake,
-  Landmark,
   CheckCircle2,
   Clock,
   Sparkles,
+  Star,
+  ExternalLink,
 } from 'lucide-react';
 import { FOUR_CADRES } from '../data/pbscnData';
 import {
@@ -39,6 +37,9 @@ interface SahyogAlertSectionProps {
   lang: LangMode;
 }
 
+/**
+ * Artisanal portrait medallion on warm alabaster/cream with soft inset depth
+ */
 function MemberPortraitSvg({
   portraitId,
   cadre,
@@ -47,10 +48,10 @@ function MemberPortraitSvg({
   cadre: CadreCode;
 }) {
   const bgMap: Record<CadreCode, string> = {
-    A: '#1E40AF',
-    B: '#0284C7',
-    C: '#4338CA',
-    D: '#0D9488',
+    A: '#B45309', // warm amber
+    B: '#059669', // emerald
+    C: '#7C3AED', // royal purple
+    D: '#D97706', // gold
   };
   const initialsMap = {
     surendra: 'SKG',
@@ -61,75 +62,82 @@ function MemberPortraitSvg({
   const isFemale = portraitId === 'anita';
 
   return (
-    <svg
-      viewBox="0 0 88 88"
-      className="w-14 h-14 rounded-xl shrink-0 border border-slate-700 bg-slate-900 shadow-md"
-      role="img"
-      aria-label={`Portrait ${initialsMap[portraitId]}`}
-    >
-      <rect width="88" height="88" rx="12" fill="#0B132B" />
-      <circle
-        cx="44"
-        cy="44"
-        r="38"
-        fill={accent}
-        fillOpacity="0.15"
-        stroke={accent}
-        strokeWidth="1.5"
-        strokeDasharray="3 2"
-      />
-      {isFemale ? (
-        <>
-          <path
-            d="M22 78 C22 58 66 58 66 78"
-            fill={accent}
-            fillOpacity="0.25"
-            stroke={accent}
-            strokeWidth="2"
-          />
+    <div className="relative shrink-0 group-hover:scale-105 transition-transform duration-500">
+      <div className="w-16 h-16 rounded-2xl p-1 bg-[#F5F1E8] shadow-[inset_3px_3px_6px_rgba(0,0,0,0.08),inset_-3px_-3px_6px_rgba(255,255,255,0.9)] border border-[#E5DFD3] flex items-center justify-center">
+        <svg
+          viewBox="0 0 88 88"
+          className="w-full h-full rounded-xl"
+          role="img"
+          aria-label={`Portrait ${initialsMap[portraitId]}`}
+        >
+          <rect width="88" height="88" rx="10" fill="#FAF7F0" />
           <circle
             cx="44"
-            cy="34"
-            r="14"
+            cy="44"
+            r="38"
             fill={accent}
-            fillOpacity="0.2"
+            fillOpacity="0.12"
             stroke={accent}
-            strokeWidth="2"
+            strokeWidth="1.5"
+            strokeDasharray="3 2"
           />
-        </>
-      ) : (
-        <>
-          <path
-            d="M20 78 C20 56 68 56 68 78"
-            fill={accent}
-            fillOpacity="0.22"
-            stroke={accent}
-            strokeWidth="2"
-          />
-          <circle
-            cx="44"
-            cy="33"
-            r="14"
-            fill={accent}
-            fillOpacity="0.2"
-            stroke={accent}
-            strokeWidth="2"
-          />
-        </>
-      )}
-      <rect x="18" y="60" width="52" height="18" rx="6" fill={accent} />
-      <text
-        x="44"
-        y="73"
-        textAnchor="middle"
-        fill="#FFFFFF"
-        fontSize="11"
-        fontWeight="800"
-        fontFamily="JetBrains Mono, monospace"
-      >
-        {initialsMap[portraitId]}
-      </text>
-    </svg>
+          {isFemale ? (
+            <>
+              <path
+                d="M22 78 C22 58 66 58 66 78"
+                fill={accent}
+                fillOpacity="0.28"
+                stroke={accent}
+                strokeWidth="2"
+              />
+              <circle
+                cx="44"
+                cy="34"
+                r="14"
+                fill={accent}
+                fillOpacity="0.22"
+                stroke={accent}
+                strokeWidth="2"
+              />
+            </>
+          ) : (
+            <>
+              <path
+                d="M20 78 C20 56 68 56 68 78"
+                fill={accent}
+                fillOpacity="0.25"
+                stroke={accent}
+                strokeWidth="2"
+              />
+              <circle
+                cx="44"
+                cy="33"
+                r="14"
+                fill={accent}
+                fillOpacity="0.22"
+                stroke={accent}
+                strokeWidth="2"
+              />
+            </>
+          )}
+          <rect x="20" y="60" width="48" height="18" rx="6" fill={accent} />
+          <text
+            x="44"
+            y="73"
+            textAnchor="middle"
+            fill="#FFFFFF"
+            fontSize="10"
+            fontWeight="bold"
+            letterSpacing="1"
+            fontFamily="monospace"
+          >
+            {initialsMap[portraitId]}
+          </text>
+        </svg>
+      </div>
+      {/* Outer subtle amber glow ring on hover */}
+      <div className="absolute inset-0 rounded-2xl border-2 border-amber-400 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+    </div>
   );
 }
 
@@ -141,26 +149,27 @@ export const SahyogAlertSection: React.FC<SahyogAlertSectionProps> = ({
   onOpenJoinModal,
   lang,
 }) => {
-  const activeAlert = alerts.find((a) => a.status === 'ACTIVE') || alerts[0];
-  const cases = activeAlert.cases;
+  const activeAlert = alerts[0];
+  const cases = activeAlert?.cases || [];
 
-  const [selectedBankTab, setSelectedBankTab] = useState<Record<string, number>>({});
-  const [expandedQrCase, setExpandedQrCase] = useState<string | null>(null);
+  const [selectedBankTab, setSelectedBankTab] = useState<{
+    [caseId: string]: number;
+  }>({});
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
+  const [expandedQrCase, setExpandedQrCase] = useState<string | null>(null);
 
-  // Receipt Upload Engine State
+  // UTR Submission Form State
   const [selectedCaseId, setSelectedCaseId] = useState<string>(
-    cases[0]?.case_id || 'PB-CASE-01'
+    cases[0]?.case_id || ''
   );
-  const [donorMemberId, setDonorMemberId] = useState<string>('PB-2025-01042');
-  const [donorName, setDonorName] = useState<string>(
-    lang === 'en' ? 'Er. Milind Gautam' : 'इंजीनियर मिलिंद गौतम'
-  );
-  const [amountPaid, setAmountPaid] = useState<number>(activeAlert.amount_per_case);
+  const [donorMemberId, setDonorMemberId] = useState<string>('');
+  const [donorName, setDonorName] = useState<string>('');
   const [utrNumber, setUtrNumber] = useState<string>('');
   const [screenshotName, setScreenshotName] = useState<string>('');
   const [formError, setFormError] = useState<string | null>(null);
   const [uploadSuccess, setUploadSuccess] = useState<string | null>(null);
+
+  // Public Transparency Filter
   const [receiptFilterCase, setReceiptFilterCase] = useState<string>('ALL');
 
   const handleCopy = (text: string, key: string) => {
@@ -178,25 +187,28 @@ export const SahyogAlertSection: React.FC<SahyogAlertSectionProps> = ({
       setFormError(
         t(
           lang,
-          'Please enter your valid Member ID and Full Name.',
-          'कृपया अपनी सही सदस्य आईडी (Member ID) और पूरा नाम दर्ज करें।'
+          'Please enter your Member ID and Full Name.',
+          'कृपया अपना सदस्य आईडी (Member ID) और पूरा नाम दर्ज करें।'
         )
       );
       return;
     }
 
-    if (!isValidUtrNumber(utrNumber)) {
+    if (!isValidUtrNumber(utrNumber.trim())) {
       setFormError(
         t(
           lang,
-          'Please enter a valid 12-digit UPI UTR / Reference Number.',
-          'कृपया वैध 12 अंकों का यूपीआई यूटीआर (UTR) या बैंक संदर्भ क्रमांक दर्ज करें।'
+          'Invalid Bank UTR / Reference Number. It must be between 8 and 22 alphanumeric characters.',
+          'अमान्य बैंक यूटीआर (UTR) संख्या। कृपया बैंक या UPI रसीद से 8 से 22 अंकों का वैध संदर्भ क्रमांक दर्ज करें।'
         )
       );
       return;
     }
 
-    const activeCase = cases.find((c) => c.case_id === selectedCaseId) || cases[0];
+    const activeCase =
+      cases.find((c) => c.case_id === selectedCaseId) || cases[0];
+    const amountPaid = activeAlert.amount_per_case;
+
     const newSubmission: ContributionReceipt = {
       receipt_id: `REC-${Math.floor(10000 + Math.random() * 90000)}`,
       member_id: donorMemberId.trim().toUpperCase(),
@@ -229,29 +241,36 @@ export const SahyogAlertSection: React.FC<SahyogAlertSectionProps> = ({
 
   return (
     <div className="space-y-8">
-      {/* SECTION 1: Active Sahyog Alert #09 Banner */}
-      <div className="bg-slate-900 border border-blue-900/40 rounded-2xl p-6 shadow-xl relative overflow-hidden">
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-          <div className="space-y-1.5 max-w-3xl">
-            <div className="flex items-center gap-2">
-              <span className="px-2.5 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider bg-amber-400 text-slate-950 font-mono-tabular shadow-sm">
+      {/* SECTION 1: Active Sahyog Alert #09 Banner (Cream-White / Warm-Gray Alabaster) */}
+      <div className="relative overflow-hidden rounded-3xl bg-[#FCFAF7] border border-[#E7E2DA] p-6 sm:p-8 shadow-[10px_10px_25px_rgba(0,0,0,0.05),-8px_-8px_20px_rgba(255,255,255,0.9)]">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          <div className="space-y-2 max-w-3xl">
+            <div className="flex flex-wrap items-center gap-2.5">
+              <span className="px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider bg-amber-400 text-stone-950 font-mono-tabular shadow-xs">
                 {t(
                   lang,
                   `ACTIVE APPEAL #0${activeAlert.alert_number}`,
                   `सक्रिय सहयोग अपील #0${activeAlert.alert_number}`
                 )}
               </span>
-              <span className="text-xs text-amber-300 font-semibold flex items-center gap-1">
-                <Clock className="w-3.5 h-3.5" />
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-stone-100 text-stone-700 border border-stone-200">
+                <Clock className="w-3.5 h-3.5 text-amber-600" />
                 {t(
                   lang,
                   `Window: ${activeAlert.start_date} to ${activeAlert.end_date}`,
                   `अवधि: ${activeAlert.start_date} से ${activeAlert.end_date}`
                 )}
               </span>
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                </span>
+                {t(lang, 'Live Mutual Aid', 'लाइव जन-सहयोग')}
+              </span>
             </div>
 
-            <h2 className="text-xl sm:text-2xl font-extrabold text-white">
+            <h2 className="text-xl sm:text-2xl font-extrabold text-stone-900 tracking-tight">
               {t(
                 lang,
                 'Emergency Sahyog Alert — 3 Verified Bereavement Cases',
@@ -259,7 +278,7 @@ export const SahyogAlertSection: React.FC<SahyogAlertSectionProps> = ({
               )}
             </h2>
 
-            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+            <p className="text-xs sm:text-sm text-stone-600 leading-relaxed font-medium">
               {t(
                 lang,
                 'Transfer ₹35 directly into the legal nominee\'s bank account via UPI or IMPS. PBSCN charges zero commission. Once transferred, upload your 12-digit UTR below to update the public transparency ledger.',
@@ -271,16 +290,16 @@ export const SahyogAlertSection: React.FC<SahyogAlertSectionProps> = ({
           <div className="flex sm:flex-row lg:flex-col gap-2 shrink-0">
             <a
               href="#receipt-upload-engine"
-              className="px-4 py-2.5 rounded-xl text-xs font-extrabold bg-blue-600 hover:bg-blue-500 text-white transition-all shadow-md text-center cursor-pointer flex items-center justify-center gap-1.5"
+              className="px-5 py-3 rounded-2xl text-xs font-extrabold bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-stone-950 transition-all shadow-[4px_4px_12px_rgba(245,158,11,0.25)] hover:shadow-[6px_6px_16px_rgba(245,158,11,0.35)] active:scale-95 text-center cursor-pointer flex items-center justify-center gap-2"
             >
-              <Upload className="w-4 h-4 text-amber-300" />
+              <Upload className="w-4 h-4 text-stone-950" />
               <span>{t(lang, 'Submit UTR Receipt', 'सहयोग रसीद दर्ज करें')}</span>
             </a>
           </div>
         </div>
       </div>
 
-      {/* SECTION 2: The 3 Bereavement Case Cards */}
+      {/* SECTION 2: The 3 Bereavement Case Cards (Refined Cream-White / Alabaster Neumorphic Aesthetic) */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {cases.map((alertCase) => {
           const activeBankIdx = selectedBankTab[alertCase.case_id] ?? 0;
@@ -308,105 +327,121 @@ export const SahyogAlertSection: React.FC<SahyogAlertSectionProps> = ({
           return (
             <article
               key={alertCase.case_id}
-              className="bg-slate-900/90 border border-slate-800 hover:border-blue-700/60 rounded-2xl shadow-xl transition-all flex flex-col justify-between overflow-hidden"
+              className="group relative overflow-hidden rounded-3xl bg-[#FCFAF7] border border-[#E7E2DA] p-6 shadow-[10px_10px_25px_rgba(0,0,0,0.06),-8px_-8px_20px_rgba(255,255,255,0.95)] hover:shadow-[18px_18px_40px_rgba(0,0,0,0.1),-10px_-10px_30px_rgba(255,255,255,1)] hover:-translate-y-2 hover:scale-[1.015] transition-all duration-500 flex flex-col justify-between"
             >
               <div>
-                {/* Dossier Header */}
-                <div className="px-5 py-3 bg-[#0A1021] border-b border-slate-800 flex items-center justify-between text-xs">
-                  <span className="font-mono-tabular font-extrabold text-amber-300 tracking-wider">
-                    {alertCase.case_id} · {alertCase.deceased_member_id}
-                  </span>
-                  <span className="font-semibold text-emerald-400 flex items-center gap-1 text-[11px]">
-                    <ShieldCheck className="w-3.5 h-3.5" />
-                    {t(lang, '5-Member Audited', '5-सदस्यीय टीम सत्यापित')}
-                  </span>
+                {/* Top Dossier Bar: Case ID & Live Verified Badge */}
+                <div className="flex items-center justify-between pb-3 border-b border-[#ECE7DE]">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-stone-100 border border-stone-200 text-stone-700 font-mono-tabular font-extrabold text-[11px] shadow-[2px_2px_4px_rgba(0,0,0,0.03),-2px_-2px_4px_rgba(255,255,255,0.9)]">
+                    <span className="w-2 h-2 rounded-full bg-amber-500" />
+                    <span>{alertCase.case_id}</span>
+                    <span className="text-stone-400">·</span>
+                    <span className="text-stone-500">{alertCase.deceased_member_id}</span>
+                  </div>
+
+                  {/* Pulsing Live Audit Beacon */}
+                  <div className="flex items-center gap-2">
+                    <div className="relative flex h-2.5 w-2.5">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
+                    </div>
+                    <div className="rounded-full bg-amber-100 p-1 text-amber-800 border border-amber-300 shadow-2xs group-hover:scale-110 group-hover:rotate-12 transition-transform duration-300" title="5-Member Physical Verification Team Approved">
+                      <Star className="h-3 w-3 fill-amber-500 text-amber-500" />
+                    </div>
+                  </div>
                 </div>
 
-                {/* Profile Information */}
-                <div className="p-5 border-b border-slate-800/80 flex items-start gap-4">
+                {/* Profile & Portrait Section */}
+                <div className="pt-4 pb-3 flex items-start gap-4">
                   <MemberPortraitSvg
                     portraitId={alertCase.portrait_id}
                     cadre={alertCase.cadre}
                   />
+
                   <div className="min-w-0 flex-1">
-                    <div className="text-[11px] font-bold uppercase tracking-wider text-blue-400">
+                    <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-stone-100 text-stone-700 border border-stone-200/80 shadow-2xs">
                       {cadreTitle}
-                    </div>
-                    <h3 className="text-base font-extrabold text-white mt-0.5">
+                    </span>
+
+                    <h3 className="text-base sm:text-lg font-extrabold text-stone-900 group-hover:text-amber-800 transition-colors mt-1">
                       {alertCase.deceased_name}
                     </h3>
-                    <p className="text-xs text-slate-300 mt-0.5 leading-snug">
+
+                    <p className="text-xs text-stone-600 mt-0.5 leading-snug font-medium">
                       {designationText}
                     </p>
-                    <div className="mt-2 flex items-center gap-2 text-[11px] font-mono-tabular text-slate-400">
-                      <span>{t(lang, 'Joined:', 'सदस्यता:')} {alertCase.doj}</span>
-                      <span>·</span>
-                      <span className="text-rose-400 font-semibold">
+
+                    <div className="mt-2.5 flex flex-wrap items-center gap-2 text-[11px] font-mono-tabular">
+                      <span className="px-2 py-0.5 rounded-md bg-stone-100 text-stone-600 border border-stone-200/60">
+                        {t(lang, 'Joined:', 'सदस्यता:')} {alertCase.doj}
+                      </span>
+                      <span className="px-2 py-0.5 rounded-md bg-rose-50 text-rose-700 border border-rose-200/70 font-semibold">
                         {t(lang, 'Demise:', 'निधन:')} {alertCase.dod}
                       </span>
                     </div>
                   </div>
                 </div>
 
-                {/* Progress Bar & Amount Raised */}
-                <div className="px-5 py-3.5 bg-slate-950/60 border-b border-slate-800/80 space-y-2">
+                {/* Progress Tracker & Raised Amount (Sculpted Cream Inset) */}
+                <div className="my-3 p-4 rounded-2xl bg-[#F6F3EC] border border-[#ECE7DE] shadow-[inset_2px_2px_6px_rgba(0,0,0,0.03)] space-y-2.5">
                   <div className="flex items-baseline justify-between text-xs">
-                    <span className="font-medium text-slate-400">
+                    <span className="font-semibold text-stone-600">
                       {t(lang, 'Direct Nominee Credit:', 'नॉमिनी खाते में कुल जमा:')}
                     </span>
-                    <span className="font-mono-tabular font-extrabold text-white text-sm">
+                    <span className="font-mono-tabular font-extrabold text-stone-900 text-sm sm:text-base">
                       {formatINR(alertCase.current_raised)}{' '}
-                      <span className="text-slate-500 font-normal text-xs">
+                      <span className="text-stone-400 font-normal text-xs">
                         / {formatINR(alertCase.target_estimate)}
                       </span>
                     </span>
                   </div>
 
-                  <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                  {/* Progress Bar with Soft Inset Glow */}
+                  <div className="w-full h-3 bg-[#E5DFD5] rounded-full overflow-hidden p-0.5 shadow-inner">
                     <div
-                      className="h-full bg-gradient-to-r from-blue-600 to-amber-400 rounded-full transition-all"
+                      className="h-full bg-gradient-to-r from-amber-500 via-amber-400 to-emerald-500 rounded-full transition-all duration-700 shadow-xs"
                       style={{ width: `${pct}%` }}
                     />
                   </div>
 
-                  <div className="flex items-center justify-between text-[11px] text-slate-400 font-mono-tabular">
-                    <span>
-                      <strong className="text-emerald-400">
+                  <div className="flex items-center justify-between text-[11px] font-mono-tabular">
+                    <span className="text-stone-600">
+                      <strong className="text-emerald-700 font-extrabold">
                         {alertCase.contributors_count.toLocaleString('en-IN')}
                       </strong>{' '}
                       {t(lang, 'members sent aid', 'साथियों ने सहयोग भेजा')}
                     </span>
-                    <span className="font-extrabold text-amber-300">
+                    <span className="px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 font-extrabold border border-amber-200">
                       ₹{activeAlert.amount_per_case} / {t(lang, 'member', 'सदस्य')}
                     </span>
                   </div>
                 </div>
 
                 {/* Legal Nominee Info */}
-                <div className="px-5 py-2.5 bg-slate-900 border-b border-slate-800 flex items-center justify-between text-xs">
+                <div className="px-3.5 py-2.5 rounded-xl bg-white border border-[#E7E2DA] flex items-center justify-between text-xs shadow-[2px_2px_6px_rgba(0,0,0,0.02)] mb-3">
                   <div>
-                    <span className="text-slate-400 font-medium">
+                    <span className="text-stone-500 font-medium">
                       {t(lang, 'Legal Nominee:', 'वैध नॉमिनी:')}
                     </span>{' '}
-                    <strong className="text-amber-200">
+                    <strong className="text-stone-900 font-bold">
                       {alertCase.nominee_name}
                     </strong>
                   </div>
-                  <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-950 text-blue-300 border border-blue-800">
+                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-stone-100 text-stone-700 border border-stone-200">
                     {alertCase.nominee_relation}
                   </span>
                 </div>
 
                 {/* Nominee Bank Credentials & One-Click Copy */}
-                <div className="p-5 space-y-3">
+                <div className="space-y-2.5">
                   <div className="flex items-center justify-between">
-                    <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-                      <Building2 className="w-3.5 h-3.5 text-blue-400" />
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-stone-600 flex items-center gap-1.5">
+                      <Building2 className="w-3.5 h-3.5 text-amber-600" />
                       {t(lang, 'Nominee Bank Credentials', 'नॉमिनी बैंक खाता विवरण')}
                     </span>
 
                     {/* Multi-bank Switcher */}
-                    <div className="inline-flex rounded-lg border border-slate-800 p-0.5 bg-slate-950">
+                    <div className="inline-flex rounded-xl border border-stone-200 p-0.5 bg-stone-100">
                       {alertCase.accounts.map((acc, idx) => (
                         <button
                           key={acc.ac}
@@ -417,10 +452,10 @@ export const SahyogAlertSection: React.FC<SahyogAlertSectionProps> = ({
                               [alertCase.case_id]: idx,
                             }))
                           }
-                          className={`px-2 py-1 rounded text-[10px] font-bold transition-all cursor-pointer ${
+                          className={`px-2.5 py-1 rounded-lg text-[10px] font-extrabold transition-all cursor-pointer ${
                             activeBankIdx === idx
-                              ? 'bg-blue-600 text-white shadow-xs'
-                              : 'text-slate-400 hover:text-white'
+                              ? 'bg-white text-stone-900 shadow-xs'
+                              : 'text-stone-500 hover:text-stone-900'
                           }`}
                         >
                           {idx === 0
@@ -431,28 +466,29 @@ export const SahyogAlertSection: React.FC<SahyogAlertSectionProps> = ({
                     </div>
                   </div>
 
-                  <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800/80 space-y-2 text-xs">
+                  {/* Tactile Bank Details Card */}
+                  <div className="p-3.5 rounded-2xl bg-white border border-[#E7E2DA] space-y-2 text-xs shadow-[2px_2px_8px_rgba(0,0,0,0.02)]">
                     <div className="flex items-center justify-between">
-                      <span className="text-slate-400">{t(lang, 'Bank Name:', 'बैंक:')}</span>
-                      <span className="font-extrabold text-white text-right">
+                      <span className="text-stone-500 font-medium">{t(lang, 'Bank Name:', 'बैंक:')}</span>
+                      <span className="font-extrabold text-stone-900 text-right">
                         {currentBank.bank}
                       </span>
                     </div>
 
                     <div className="flex items-center justify-between">
-                      <span className="text-slate-400">{t(lang, 'Account No:', 'खाता संख्या:')}</span>
+                      <span className="text-stone-500 font-medium">{t(lang, 'Account No:', 'खाता संख्या:')}</span>
                       <div className="flex items-center gap-1.5">
-                        <span className="font-mono-tabular font-bold text-amber-300">
+                        <span className="font-mono-tabular font-extrabold text-stone-900 text-sm">
                           {currentBank.ac}
                         </span>
                         <button
                           type="button"
                           onClick={() => handleCopy(currentBank.ac, `ac-${alertCase.case_id}`)}
-                          className="p-1 rounded hover:bg-slate-800 text-slate-400 hover:text-white cursor-pointer"
+                          className="p-1.5 rounded-lg bg-stone-100 hover:bg-stone-200 text-stone-700 hover:text-stone-950 transition-all cursor-pointer"
                           title="Copy Account Number"
                         >
                           {copiedKey === `ac-${alertCase.case_id}` ? (
-                            <Check className="w-3.5 h-3.5 text-emerald-400" />
+                            <Check className="w-3.5 h-3.5 text-emerald-600" />
                           ) : (
                             <Copy className="w-3.5 h-3.5" />
                           )}
@@ -461,19 +497,19 @@ export const SahyogAlertSection: React.FC<SahyogAlertSectionProps> = ({
                     </div>
 
                     <div className="flex items-center justify-between">
-                      <span className="text-slate-400">IFSC:</span>
+                      <span className="text-stone-500 font-medium">IFSC:</span>
                       <div className="flex items-center gap-1.5">
-                        <span className="font-mono-tabular font-bold text-white">
+                        <span className="font-mono-tabular font-extrabold text-stone-900">
                           {currentBank.ifsc}
                         </span>
                         <button
                           type="button"
                           onClick={() => handleCopy(currentBank.ifsc, `ifsc-${alertCase.case_id}`)}
-                          className="p-1 rounded hover:bg-slate-800 text-slate-400 hover:text-white cursor-pointer"
+                          className="p-1.5 rounded-lg bg-stone-100 hover:bg-stone-200 text-stone-700 hover:text-stone-950 transition-all cursor-pointer"
                           title="Copy IFSC"
                         >
                           {copiedKey === `ifsc-${alertCase.case_id}` ? (
-                            <Check className="w-3.5 h-3.5 text-emerald-400" />
+                            <Check className="w-3.5 h-3.5 text-emerald-600" />
                           ) : (
                             <Copy className="w-3.5 h-3.5" />
                           )}
@@ -481,16 +517,18 @@ export const SahyogAlertSection: React.FC<SahyogAlertSectionProps> = ({
                       </div>
                     </div>
                   </div>
+                </div>
 
-                  {/* QR Code Action Toggle */}
+                {/* QR Code Action Toggle */}
+                <div className="mt-4 pt-2">
                   <button
                     type="button"
                     onClick={() =>
                       setExpandedQrCase(isQrOpen ? null : alertCase.case_id)
                     }
-                    className="w-full py-2.5 rounded-xl border border-blue-500/30 hover:border-blue-400 bg-blue-950/40 hover:bg-blue-900/40 text-blue-300 hover:text-white text-xs font-extrabold flex items-center justify-center gap-2 transition-all cursor-pointer"
+                    className="w-full py-3.5 rounded-2xl bg-gradient-to-b from-[#FFFDF9] to-[#F5F2EA] hover:from-[#FAF6ED] hover:to-[#EDE8DC] text-stone-900 font-extrabold text-xs border border-[#D9D3C7] shadow-[4px_4px_10px_rgba(0,0,0,0.04),-3px_-3px_8px_rgba(255,255,255,0.95)] hover:shadow-[6px_6px_14px_rgba(0,0,0,0.07),-4px_-4px_10px_rgba(255,255,255,1)] hover:scale-[1.01] active:scale-98 flex items-center justify-center gap-2 transition-all cursor-pointer"
                   >
-                    <QrCode className="w-4 h-4 text-amber-400" />
+                    <QrCode className="w-4 h-4 text-amber-600" />
                     <span>
                       {isQrOpen
                         ? t(lang, 'Hide BharatQR', 'क्यूआर कोड छिपाएं')
@@ -500,7 +538,7 @@ export const SahyogAlertSection: React.FC<SahyogAlertSectionProps> = ({
 
                   {/* BharatQR Widget Modal Display */}
                   {isQrOpen && (
-                    <div className="pt-2">
+                    <div className="mt-3 p-4 rounded-2xl bg-white border border-[#E7E2DA] shadow-[inset_2px_2px_6px_rgba(0,0,0,0.03)]">
                       <BharatQrWidget
                         upiId={currentBank.upi_id}
                         payeeName={currentBank.holder}
@@ -511,29 +549,32 @@ export const SahyogAlertSection: React.FC<SahyogAlertSectionProps> = ({
                   )}
                 </div>
               </div>
+
+              {/* Animated subtle border on hover */}
+              <div className="absolute inset-0 rounded-3xl border border-amber-400/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
             </article>
           );
         })}
       </div>
 
-      {/* SECTION 3: UTR Receipt Verification Engine */}
+      {/* SECTION 3: UTR Receipt Verification Engine (Cream-White / Warm-Gray Card) */}
       <div
         id="receipt-upload-engine"
-        className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl"
+        className="rounded-3xl bg-[#FCFAF7] border border-[#E7E2DA] p-6 sm:p-8 shadow-[10px_10px_25px_rgba(0,0,0,0.05),-8px_-8px_20px_rgba(255,255,255,0.9)]"
       >
-        <div className="flex items-center gap-3 border-b border-slate-800 pb-4 mb-6">
-          <div className="w-10 h-10 rounded-xl bg-amber-400/10 border border-amber-400/30 flex items-center justify-center text-amber-400 shrink-0">
+        <div className="flex items-center gap-3 border-b border-[#ECE7DE] pb-4 mb-6">
+          <div className="w-10 h-10 rounded-2xl bg-amber-100 border border-amber-300 flex items-center justify-center text-amber-800 shrink-0 shadow-xs">
             <FileCheck2 className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="text-lg font-extrabold text-white">
+            <h3 className="text-lg font-extrabold text-stone-900">
               {t(
                 lang,
                 'Sahyog UTR Verification & Receipt Submission',
                 'सहयोग यूटीआर सत्यापन एवं रसीद पंजीकरण'
               )}
             </h3>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-stone-600 font-medium">
               {t(
                 lang,
                 'Submit your 12-digit Bank/UPI reference number to certify your mandatory 90% participation rule.',
@@ -544,28 +585,28 @@ export const SahyogAlertSection: React.FC<SahyogAlertSectionProps> = ({
         </div>
 
         {uploadSuccess && (
-          <div className="mb-5 p-4 rounded-xl bg-emerald-950/80 border border-emerald-500/40 text-emerald-200 text-xs flex items-center gap-3">
-            <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
-            <span>{uploadSuccess}</span>
+          <div className="mb-5 p-4 rounded-2xl bg-emerald-50 border border-emerald-300 text-emerald-900 text-xs flex items-center gap-3">
+            <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
+            <span className="font-semibold">{uploadSuccess}</span>
           </div>
         )}
 
         {formError && (
-          <div className="mb-5 p-4 rounded-xl bg-rose-950/80 border border-rose-500/40 text-rose-200 text-xs">
+          <div className="mb-5 p-4 rounded-2xl bg-rose-50 border border-rose-300 text-rose-900 text-xs font-semibold">
             {formError}
           </div>
         )}
 
-        <form onSubmit={handleReceiptSubmit} className="space-y-4">
+        <form onSubmit={handleReceiptSubmit} className="space-y-5">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
             <div>
-              <label className="block font-bold text-slate-300 mb-1.5">
+              <label className="block font-bold text-stone-700 mb-1.5">
                 {t(lang, 'Case ID *', 'सहयोग केस चुनें *')}
               </label>
               <select
                 value={selectedCaseId}
                 onChange={(e) => setSelectedCaseId(e.target.value)}
-                className="w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-2.5 font-bold text-white focus:border-blue-500 focus:outline-none"
+                className="w-full rounded-xl border border-stone-300 bg-white px-3.5 py-2.5 font-bold text-stone-900 shadow-2xs focus:border-amber-500 focus:outline-none"
               >
                 {cases.map((c) => (
                   <option key={c.case_id} value={c.case_id}>
@@ -576,7 +617,7 @@ export const SahyogAlertSection: React.FC<SahyogAlertSectionProps> = ({
             </div>
 
             <div>
-              <label className="block font-bold text-slate-300 mb-1.5">
+              <label className="block font-bold text-stone-700 mb-1.5">
                 {t(lang, 'Your Member ID *', 'आपकी सदस्य संख्या (Member ID) *')}
               </label>
               <input
@@ -584,12 +625,12 @@ export const SahyogAlertSection: React.FC<SahyogAlertSectionProps> = ({
                 value={donorMemberId}
                 onChange={(e) => setDonorMemberId(e.target.value)}
                 placeholder="e.g. PB-2025-01042"
-                className="w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-2.5 font-mono-tabular font-bold text-white focus:border-blue-500 focus:outline-none"
+                className="w-full rounded-xl border border-stone-300 bg-white px-3.5 py-2.5 font-mono-tabular font-bold text-stone-900 placeholder:text-stone-400 shadow-2xs focus:border-amber-500 focus:outline-none"
               />
             </div>
 
             <div>
-              <label className="block font-bold text-slate-300 mb-1.5">
+              <label className="block font-bold text-stone-700 mb-1.5">
                 {t(lang, 'Your Full Name *', 'आपका पूरा नाम *')}
               </label>
               <input
@@ -597,12 +638,12 @@ export const SahyogAlertSection: React.FC<SahyogAlertSectionProps> = ({
                 value={donorName}
                 onChange={(e) => setDonorName(e.target.value)}
                 placeholder="e.g. Dr. Siddharth Gautam"
-                className="w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-2.5 font-bold text-white focus:border-blue-500 focus:outline-none"
+                className="w-full rounded-xl border border-stone-300 bg-white px-3.5 py-2.5 font-bold text-stone-900 placeholder:text-stone-400 shadow-2xs focus:border-amber-500 focus:outline-none"
               />
             </div>
 
             <div>
-              <label className="block font-bold text-slate-300 mb-1.5">
+              <label className="block font-bold text-stone-700 mb-1.5">
                 {t(lang, '12-Digit UPI UTR / Ref No. *', '12 अंकों का UTR / बैंक संदर्भ क्रमांक *')}
               </label>
               <input
@@ -611,13 +652,13 @@ export const SahyogAlertSection: React.FC<SahyogAlertSectionProps> = ({
                 onChange={(e) => setUtrNumber(e.target.value)}
                 placeholder="e.g. 429182948210"
                 maxLength={24}
-                className="w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-2.5 font-mono-tabular font-bold text-amber-300 focus:border-amber-400 focus:outline-none"
+                className="w-full rounded-xl border border-stone-300 bg-white px-3.5 py-2.5 font-mono-tabular font-extrabold text-stone-900 placeholder:text-stone-400 shadow-2xs focus:border-amber-500 focus:outline-none"
               />
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
-            <div className="text-[11px] text-slate-400">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
+            <div className="text-[11px] text-stone-600 font-medium">
               {t(
                 lang,
                 'Amount: ₹35 per case · All transfers are verified against direct nominee bank statements.',
@@ -627,26 +668,26 @@ export const SahyogAlertSection: React.FC<SahyogAlertSectionProps> = ({
 
             <button
               type="submit"
-              className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-extrabold transition-all shadow-md cursor-pointer flex items-center justify-center gap-2"
+              className="w-full sm:w-auto px-7 py-3 rounded-2xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-stone-950 text-xs font-extrabold transition-all shadow-[4px_4px_12px_rgba(245,158,11,0.25)] hover:shadow-[6px_6px_16px_rgba(245,158,11,0.35)] active:scale-95 cursor-pointer flex items-center justify-center gap-2"
             >
-              <Upload className="w-4 h-4 text-slate-950" />
+              <Upload className="w-4 h-4 text-stone-950" />
               <span>{t(lang, 'Submit Receipt to Ledger', 'रसीद दर्ज करें')}</span>
             </button>
           </div>
         </form>
       </div>
 
-      {/* SECTION 4: The 4 Swabhiman Cadres Overview */}
+      {/* SECTION 4: The 4 Swabhiman Cadres Overview (Cream-White / Warm-Gray Cards) */}
       <div className="space-y-4">
         <div>
-          <h3 className="text-lg font-extrabold text-white">
+          <h3 className="text-lg font-extrabold text-stone-900">
             {t(
               lang,
               'The 4 Swabhiman Cadres of Prabuddha Bharat',
               'प्रबुद्ध भारत के 4 स्वाभिमान संवर्ग'
             )}
           </h3>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-stone-600 font-medium">
             {t(
               lang,
               'Equal solidarity across government servants, private professionals, legal/medical experts, and grassroots citizens.',
@@ -659,33 +700,33 @@ export const SahyogAlertSection: React.FC<SahyogAlertSectionProps> = ({
           {FOUR_CADRES.map((cadre) => (
             <div
               key={cadre.code}
-              className="p-5 rounded-2xl bg-slate-900 border border-slate-800 hover:border-blue-700/60 transition-all flex flex-col justify-between"
+              className="p-5 rounded-3xl bg-[#FCFAF7] border border-[#E7E2DA] shadow-[6px_6px_16px_rgba(0,0,0,0.04),-4px_-4px_12px_rgba(255,255,255,0.9)] hover:shadow-[10px_10px_22px_rgba(0,0,0,0.07)] hover:-translate-y-1 transition-all flex flex-col justify-between"
             >
-              <div className="space-y-2">
+              <div className="space-y-2.5">
                 <div className="flex items-center justify-between">
-                  <span className="w-8 h-8 rounded-lg bg-blue-950 border border-blue-800 text-amber-400 font-extrabold text-xs flex items-center justify-center">
+                  <span className="w-8 h-8 rounded-xl bg-amber-100 border border-amber-300 text-amber-900 font-extrabold text-xs flex items-center justify-center shadow-2xs">
                     {cadre.code}
                   </span>
-                  <span className="text-xs font-mono-tabular font-bold text-slate-300">
+                  <span className="text-xs font-mono-tabular font-bold text-stone-600">
                     {cadre.membersCount.toLocaleString('en-IN')} {t(lang, 'members', 'सदस्य')}
                   </span>
                 </div>
 
-                <h4 className="text-sm font-extrabold text-white">
+                <h4 className="text-sm font-extrabold text-stone-900">
                   {lang === 'en' ? cadre.titleEn : cadre.titleHi}
                 </h4>
 
-                <p className="text-xs text-slate-400 leading-relaxed">
+                <p className="text-xs text-stone-600 leading-relaxed font-medium">
                   {lang === 'en' ? cadre.subtitleEn : cadre.subtitleHi}
                 </p>
               </div>
 
-              <div className="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+              <div className="mt-4 pt-3 border-t border-[#ECE7DE] flex items-center justify-between text-xs text-stone-600">
                 <span>{t(lang, 'District Committees:', 'जिला कमेटियां:')} {cadre.activeDistrictCommittees}</span>
                 <button
                   type="button"
                   onClick={() => onNavigateDirectory(cadre.code)}
-                  className="font-bold text-amber-400 hover:text-amber-300 cursor-pointer"
+                  className="font-extrabold text-amber-700 hover:text-amber-800 cursor-pointer"
                 >
                   {t(lang, 'View →', 'देखें →')}
                 </button>
@@ -697,23 +738,23 @@ export const SahyogAlertSection: React.FC<SahyogAlertSectionProps> = ({
 
       {/* SECTION 5: Interactive Solidarity Showcase (CardStack & 3D Cards) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <div className="lg:col-span-5 bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl flex flex-col justify-between">
+        <div className="lg:col-span-5 bg-[#FCFAF7] border border-[#E7E2DA] rounded-3xl p-6 shadow-[10px_10px_25px_rgba(0,0,0,0.05),-8px_-8px_20px_rgba(255,255,255,0.9)] flex flex-col justify-between">
           <div>
-            <div className="text-[11px] font-bold uppercase tracking-wider text-amber-400">
+            <div className="text-[11px] font-bold uppercase tracking-wider text-amber-700">
               {t(
                 lang,
                 'Verified Nominee Testimonials · CardStack',
                 'सत्यापित नॉमिनी परिवारों के अनुभव · CardStack'
               )}
             </div>
-            <h3 className="text-base font-extrabold text-white mt-0.5">
+            <h3 className="text-base font-extrabold text-stone-900 mt-0.5">
               {t(
                 lang,
                 'Direct Impact on Bereaved Families',
                 'दिवंगत परिवारों को मिला सीधा संबल'
               )}
             </h3>
-            <p className="text-xs text-slate-400 mt-1">
+            <p className="text-xs text-stone-600 mt-1 font-medium">
               {t(
                 lang,
                 'Real accounts from nominee families and community mentors.',
@@ -727,16 +768,16 @@ export const SahyogAlertSection: React.FC<SahyogAlertSectionProps> = ({
           </div>
         </div>
 
-        <div className="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-3">
+        <div className="lg:col-span-7 bg-[#FCFAF7] border border-[#E7E2DA] rounded-3xl p-6 shadow-[10px_10px_25px_rgba(0,0,0,0.05),-8px_-8px_20px_rgba(255,255,255,0.9)] space-y-3">
           <div>
-            <div className="text-[11px] font-bold uppercase tracking-wider text-blue-400">
+            <div className="text-[11px] font-bold uppercase tracking-wider text-amber-700">
               {t(
                 lang,
                 'Interactive 3D Solidarity Deck · Draggable Cards',
                 '3D स्वाभिमान कार्ड डेक · Draggable Cards'
               )}
             </div>
-            <h3 className="text-base font-extrabold text-white mt-0.5">
+            <h3 className="text-base font-extrabold text-stone-900 mt-0.5">
               {t(
                 lang,
                 'Explore the 5 Constitutional Pillars of PBSCN',

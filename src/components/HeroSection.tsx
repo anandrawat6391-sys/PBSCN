@@ -162,73 +162,73 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         </MurmurationWordmark>
       </div>
 
-      {/* Sovereign Verified Ledger Strip (4 Golden Pillars) */}
+      {/* Sovereign Verified Ledger Strip (4 Golden Pillars in Tactile Cream-White / Warm-Gray) */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-          <div className="p-3.5 rounded-xl bg-slate-900/80 border border-blue-900/40 shadow-sm flex items-center justify-between">
+          <div className="p-4 rounded-2xl bg-[#FCFAF7] border border-[#E7E2DA] shadow-[6px_6px_16px_rgba(0,0,0,0.04),-4px_-4px_12px_rgba(255,255,255,0.9)] hover:shadow-[10px_10px_22px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all flex items-center justify-between">
             <div>
-              <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+              <div className="text-[11px] font-bold uppercase tracking-wider text-stone-500">
                 {t(lang, 'Verified Members', 'सत्यापित सदस्य')}
               </div>
-              <div className="text-xl sm:text-2xl font-extrabold text-white font-mono-tabular mt-0.5">
+              <div className="text-xl sm:text-2xl font-extrabold text-stone-900 font-mono-tabular mt-0.5">
                 62,410+
               </div>
-              <div className="text-[11px] text-emerald-400 font-semibold">
+              <div className="text-[11px] text-emerald-700 font-semibold">
                 {t(lang, 'Across 75 UP Districts', '75 जिलों में सक्रिय')}
               </div>
             </div>
-            <div className="w-10 h-10 rounded-xl bg-blue-950 border border-blue-800/60 flex items-center justify-center text-amber-400 shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-amber-100 border border-amber-300 flex items-center justify-center text-amber-900 shrink-0 shadow-2xs">
               <DhammaChakraIcon size={20} />
             </div>
           </div>
 
-          <div className="p-3.5 rounded-xl bg-slate-900/80 border border-blue-900/40 shadow-sm flex items-center justify-between">
+          <div className="p-4 rounded-2xl bg-[#FCFAF7] border border-[#E7E2DA] shadow-[6px_6px_16px_rgba(0,0,0,0.04),-4px_-4px_12px_rgba(255,255,255,0.9)] hover:shadow-[10px_10px_22px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all flex items-center justify-between">
             <div>
-              <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+              <div className="text-[11px] font-bold uppercase tracking-wider text-stone-500">
                 {t(lang, 'Micro-Contribution', 'प्रति सदस्य सहयोग')}
               </div>
-              <div className="text-xl sm:text-2xl font-extrabold text-amber-300 font-mono-tabular mt-0.5">
+              <div className="text-xl sm:text-2xl font-extrabold text-amber-700 font-mono-tabular mt-0.5">
                 ₹35 – ₹50
               </div>
-              <div className="text-[11px] text-slate-300 font-medium">
+              <div className="text-[11px] text-stone-600 font-medium">
                 {t(lang, 'Direct to Nominee Bank', 'सीधे नॉमिनी बैंक खाते में')}
               </div>
             </div>
-            <div className="w-10 h-10 rounded-xl bg-amber-950/60 border border-amber-800/50 flex items-center justify-center text-amber-300 shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-amber-100 border border-amber-300 flex items-center justify-center text-amber-800 shrink-0 shadow-2xs">
               <HeartHandshake className="w-5 h-5" />
             </div>
           </div>
 
-          <div className="p-3.5 rounded-xl bg-slate-900/80 border border-blue-900/40 shadow-sm flex items-center justify-between">
+          <div className="p-4 rounded-2xl bg-[#FCFAF7] border border-[#E7E2DA] shadow-[6px_6px_16px_rgba(0,0,0,0.04),-4px_-4px_12px_rgba(255,255,255,0.9)] hover:shadow-[10px_10px_22px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all flex items-center justify-between">
             <div>
-              <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+              <div className="text-[11px] font-bold uppercase tracking-wider text-stone-500">
                 {t(lang, 'Total Direct Aid', 'कुल प्रत्यक्ष सहायता')}
               </div>
-              <div className="text-xl sm:text-2xl font-extrabold text-white font-mono-tabular mt-0.5">
+              <div className="text-xl sm:text-2xl font-extrabold text-stone-900 font-mono-tabular mt-0.5">
                 ₹28.45 Cr
               </div>
-              <div className="text-[11px] text-emerald-400 font-semibold">
+              <div className="text-[11px] text-emerald-700 font-semibold">
                 {t(lang, '114 Bereaved Families', '114 परिवारों को संबल')}
               </div>
             </div>
-            <div className="w-10 h-10 rounded-xl bg-emerald-950/60 border border-emerald-800/50 flex items-center justify-center text-emerald-300 shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-emerald-100 border border-emerald-300 flex items-center justify-center text-emerald-800 shrink-0 shadow-2xs">
               <ShieldCheck className="w-5 h-5" />
             </div>
           </div>
 
-          <div className="p-3.5 rounded-xl bg-slate-900/80 border border-blue-900/40 shadow-sm flex items-center justify-between">
+          <div className="p-4 rounded-2xl bg-[#FCFAF7] border border-[#E7E2DA] shadow-[6px_6px_16px_rgba(0,0,0,0.04),-4px_-4px_12px_rgba(255,255,255,0.9)] hover:shadow-[10px_10px_22px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all flex items-center justify-between">
             <div>
-              <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+              <div className="text-[11px] font-bold uppercase tracking-wider text-stone-500">
                 {t(lang, 'Intermediary Fee', 'बिचौलिया कमीशन')}
               </div>
-              <div className="text-xl sm:text-2xl font-extrabold text-emerald-400 font-mono-tabular mt-0.5">
+              <div className="text-xl sm:text-2xl font-extrabold text-emerald-700 font-mono-tabular mt-0.5">
                 0.00%
               </div>
-              <div className="text-[11px] text-slate-300 font-medium">
+              <div className="text-[11px] text-stone-600 font-medium">
                 {t(lang, 'Zero Middlemen Cut', '100% सीधा हस्तांतरण')}
               </div>
             </div>
-            <div className="w-10 h-10 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-emerald-400 font-mono-tabular font-bold text-xs shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-stone-100 border border-stone-300 flex items-center justify-center text-emerald-700 font-mono-tabular font-bold text-xs shrink-0 shadow-2xs">
               P2P
             </div>
           </div>
