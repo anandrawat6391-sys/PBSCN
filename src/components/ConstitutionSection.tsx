@@ -8,6 +8,7 @@ import {
   BookMarked,
   Filter,
 } from 'lucide-react';
+import { MarkerText, Mark } from './ui/marker-text';
 import { CONSTITUTION_22_ARTICLES } from '../data/pbscnData';
 import {
   calculateParticipationRate,
@@ -111,20 +112,28 @@ export const ConstitutionSection: React.FC<ConstitutionSectionProps> = ({
               'प्रबुद्ध भारत स्वाभिमान न्यास की सर्वोच्च नियमावली'
             )}
           </div>
-          <h2 className="text-xl sm:text-2xl font-extrabold text-white mt-1">
-            {t(
-              lang,
-              'The 22-Article Constitution (Niyamawali)',
-              '22-सूत्रीय संवैधानिक नियमावली'
+          <MarkerText as="h2" className="text-xl sm:text-2xl font-extrabold text-white mt-1">
+            {lang === 'en' ? (
+              <>
+                The 22-Article Constitution <Mark type="underline" color="#f59e0b">(Niyamawali)</Mark>
+              </>
+            ) : (
+              <>
+                22-सूत्रीय <Mark type="underline" color="#f59e0b">संवैधानिक नियमावली</Mark>
+              </>
             )}
-          </h2>
-          <p className="text-xs text-slate-300 mt-1 max-w-2xl leading-relaxed">
-            {t(
-              lang,
-              'Transparent, legally bound principles under Indian Trusts Act 1882 ensuring 100% direct peer-to-peer solidarity with zero leakages.',
-              '100% पारदर्शी, स्वाभिमान-आधारित नियम जो यह सुनिश्चित करते हैं कि हर दिवंगत परिवार को बिना किसी बिचौलिए या पक्षपात के सीधा जन-सहयोग मिले।'
+          </MarkerText>
+          <MarkerText as="p" className="text-xs text-slate-300 mt-1 max-w-2xl leading-relaxed">
+            {lang === 'en' ? (
+              <>
+                Transparent, legally bound principles under <Mark type="highlight" color="#1e3a8a">Indian Trusts Act 1882</Mark> ensuring 100% direct peer-to-peer solidarity with <Mark type="strike" color="#ef4444">zero leakages</Mark>.
+              </>
+            ) : (
+              <>
+                100% पारदर्शी, स्वाभिमान-आधारित नियम जो यह सुनिश्चित करते हैं कि हर दिवंगत परिवार को बिना किसी <Mark type="strike" color="#ef4444">बिचौलिए या पक्षपात</Mark> के <Mark type="box" color="#10b981">सीधा जन-सहयोग</Mark> मिले।
+              </>
             )}
-          </p>
+          </MarkerText>
         </div>
       </div>
 

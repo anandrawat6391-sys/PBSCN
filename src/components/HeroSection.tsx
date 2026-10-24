@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import MurmurationWordmark, {
   MurmurationPreset,
 } from './ui/murmuration-wordmark';
+import { MarkerText, Mark } from './ui/marker-text';
 import { DhammaChakraIcon } from './DhammaChakraIcon';
 import { Sparkles, MousePointer, ShieldCheck, HeartHandshake, ArrowDown } from 'lucide-react';
 import { LangMode, t } from '../utils/i18n';
@@ -87,21 +88,29 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 </span>
               </div>
 
-              <h1 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white drop-shadow-md">
-                {t(
-                  lang,
-                  'Prabuddha Bharat Social Care Network',
-                  'प्रबुद्ध भारत स्वाभिमान न्यास'
+              <MarkerText as="h1" className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white drop-shadow-md">
+                {lang === 'en' ? (
+                  <>
+                    Prabuddha Bharat <Mark type="underline" color="#fbbf24">Social Care Network</Mark>
+                  </>
+                ) : (
+                  <>
+                    प्रबुद्ध भारत <Mark type="underline" color="#fbbf24">स्वाभिमान न्यास</Mark>
+                  </>
                 )}
-              </h1>
+              </MarkerText>
 
-              <p className="text-xs sm:text-sm md:text-base text-slate-200 max-w-2xl font-medium leading-relaxed drop-shadow">
-                {t(
-                  lang,
-                  '100% Direct Peer-to-Peer Mutual Aid. When a verified community member passes away, 62,410+ brothers and sisters transfer ₹35 directly into the legal nominee\'s account with zero middlemen.',
-                  '100% प्रत्यक्ष जन-सहयोग। जब हमारे किसी सदस्य का आकस्मिक निधन होता है, तो 62,410+ साथी सीधे दिवंगत सदस्य के नॉमिनी के खाते में ₹35 भेजकर परिवार को सम्मानजनक आर्थिक संबल प्रदान करते हैं।'
+              <MarkerText as="p" className="text-xs sm:text-sm md:text-base text-slate-200 max-w-2xl font-medium leading-relaxed drop-shadow">
+                {lang === 'en' ? (
+                  <>
+                    <Mark type="highlight" color="#1e3a8a">100% Direct Peer-to-Peer Mutual Aid</Mark>. When a verified community member passes away, 62,410+ brothers and sisters transfer ₹35 directly into the legal nominee's account with <Mark type="circle" color="#10b981">zero middlemen</Mark>.
+                  </>
+                ) : (
+                  <>
+                    <Mark type="highlight" color="#1e3a8a">100% प्रत्यक्ष जन-सहयोग</Mark>। जब हमारे किसी सदस्य का आकस्मिक निधन होता है, तो 62,410+ साथी सीधे दिवंगत सदस्य के नॉमिनी के खाते में ₹35 भेजकर परिवार को <Mark type="circle" color="#10b981">सम्मानजनक आर्थिक संबल</Mark> प्रदान करते हैं।
+                  </>
                 )}
-              </p>
+              </MarkerText>
 
               {/* Action Buttons */}
               <div className="flex flex-wrap items-center justify-center gap-3 pt-1">
