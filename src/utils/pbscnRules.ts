@@ -8,7 +8,8 @@ export interface NomineeDetails {
   relation: NomineeRelation;
   bank_name: string;
   account_number: string;
-  ifsc_code: string;
+  ifsc_code?: string;
+  ifsc?: string;
   upi_id: string;
 }
 
