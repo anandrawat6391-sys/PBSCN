@@ -30,6 +30,7 @@ import { MemberDirectorySection } from './components/MemberDirectorySection';
 import { TrustFundSection } from './components/TrustFundSection';
 import { WelfareSchemesSection } from './components/WelfareSchemesSection';
 import { ConstitutionSection } from './components/ConstitutionSection';
+import PbscnTearFooter from './components/pbscn-tear-footer';
 import { LangMode, t } from './utils/i18n';
 
 type ActiveTab =
@@ -547,6 +548,9 @@ export default function App() {
           )}
 
           {activeTab === 'niyamawali' && <ConstitutionSection lang={lang} />}
+
+          {/* Pushpin Tear Poster Footer */}
+          <PbscnTearFooter lang={lang} />
         </main>
 
         {/* Institutional Footer */}
