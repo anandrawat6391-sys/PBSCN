@@ -13,6 +13,7 @@ import {
   Sparkles,
   Star,
   ExternalLink,
+  HeartHandshake,
 } from 'lucide-react';
 import { FOUR_CADRES } from '../data/pbscnData';
 import {
@@ -26,6 +27,7 @@ import { BharatQrWidget } from './BharatQrWidget';
 import { DhammaChakraIcon } from './DhammaChakraIcon';
 import DraggableCardDemo from './draggable-card-demo-2';
 import { CardStackDemo } from './card-stack-demo';
+import { GradientBlobCard } from './ui/gradient-blob-card';
 import { LangMode, t } from '../utils/i18n';
 
 interface SahyogAlertSectionProps {
@@ -733,6 +735,103 @@ export const SahyogAlertSection: React.FC<SahyogAlertSectionProps> = ({
               </div>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* SECTION 4.5: Animated Gradient Blob Holographic Impact Cards */}
+      <div className="space-y-4">
+        <div>
+          <h3 className="text-lg font-extrabold text-stone-900">
+            {t(
+              lang,
+              'Holographic Pillars of Self-Respect (Swabhiman)',
+              'स्वाभिमान के 3 जीवंत संवैधानिक स्तंभ'
+            )}
+          </h3>
+          <p className="text-xs text-stone-600 font-medium">
+            {t(
+              lang,
+              'Interactive animated gradient glass cards showcasing the core pillars of Prabuddha Bharat.',
+              'एनिमेटेड ग्रेडिएंट ब्लब ग्लास कार्ड्स जो प्रबुद्ध भारत के मूल सिद्धांतों को दर्शाते हैं।'
+            )}
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 justify-items-center">
+          <GradientBlobCard
+            width="w-full max-w-[280px]"
+            height="h-[250px]"
+            blobGradient="bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500"
+          >
+            <div className="flex flex-col items-center justify-between h-full py-2">
+              <div className="w-10 h-10 rounded-2xl bg-amber-100 flex items-center justify-center text-amber-800 shadow-xs mb-2">
+                <HeartHandshake className="w-5 h-5" />
+              </div>
+              <div className="text-2xl font-black font-mono-tabular text-stone-900">
+                ₹35 / {t(lang, 'Case', 'केस')}
+              </div>
+              <div className="text-xs font-extrabold uppercase tracking-wider text-amber-700 mt-1">
+                {t(lang, 'Direct P2P Aid', '100% सीधा जन-सहयोग')}
+              </div>
+              <p className="text-[11px] text-stone-600 mt-1 font-medium leading-tight">
+                {t(
+                  lang,
+                  'Zero middleman deduction. 100% transferred to legal nominee account.',
+                  'बिना किसी कटौती के शत-प्रतिशत राशि सीधे नॉमिनी के खाते में।'
+                )}
+              </p>
+            </div>
+          </GradientBlobCard>
+
+          <GradientBlobCard
+            width="w-full max-w-[280px]"
+            height="h-[250px]"
+            blobGradient="bg-gradient-to-r from-emerald-500 via-teal-500 to-amber-400"
+          >
+            <div className="flex flex-col items-center justify-between h-full py-2">
+              <div className="w-10 h-10 rounded-2xl bg-emerald-100 flex items-center justify-center text-emerald-800 shadow-xs mb-2">
+                <Users className="w-5 h-5" />
+              </div>
+              <div className="text-2xl font-black font-mono-tabular text-stone-900">
+                62,410+
+              </div>
+              <div className="text-xs font-extrabold uppercase tracking-wider text-emerald-800 mt-1">
+                {t(lang, 'Verified Members', 'सत्यापित सदस्य संख्या')}
+              </div>
+              <p className="text-[11px] text-stone-600 mt-1 font-medium leading-tight">
+                {t(
+                  lang,
+                  'Organised across 75 Uttar Pradesh districts and 4 cadres.',
+                  'उत्तर प्रदेश के 75 जिलों और 4 संवर्गों में संगठित जन-शक्ति।'
+                )}
+              </p>
+            </div>
+          </GradientBlobCard>
+
+          <GradientBlobCard
+            width="w-full max-w-[280px]"
+            height="h-[250px]"
+            blobGradient="bg-gradient-to-r from-indigo-500 via-purple-500 to-amber-400"
+          >
+            <div className="flex flex-col items-center justify-between h-full py-2">
+              <div className="w-10 h-10 rounded-2xl bg-amber-100 flex items-center justify-center text-amber-900 shadow-xs mb-2">
+                <ShieldCheck className="w-5 h-5" />
+              </div>
+              <div className="text-2xl font-black font-mono-tabular text-stone-900">
+                ₹28.45 Cr
+              </div>
+              <div className="text-xs font-extrabold uppercase tracking-wider text-amber-800 mt-1">
+                {t(lang, 'Solidarity Delivered', 'कुल वितरित सहायता')}
+              </div>
+              <p className="text-[11px] text-stone-600 mt-1 font-medium leading-tight">
+                {t(
+                  lang,
+                  '114 bereaved families supported with dignity and transparency.',
+                  '114 दिवंगत परिवारों को स्वाभिमानपूर्वक आर्थिक संबल प्रदान किया।'
+                )}
+              </p>
+            </div>
+          </GradientBlobCard>
         </div>
       </div>
 

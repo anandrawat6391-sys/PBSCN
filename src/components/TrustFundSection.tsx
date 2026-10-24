@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { isValidUtrNumber } from '../utils/pbscnRules';
 import { BharatQrWidget } from './BharatQrWidget';
+import { GradientBlobCard } from './ui/gradient-blob-card';
 import { LangMode, t } from '../utils/i18n';
 
 interface TrustFundSectionProps {
@@ -185,42 +186,62 @@ export const TrustFundSection: React.FC<TrustFundSectionProps> = ({ lang }) => {
         </div>
       </div>
 
-      {/* Tier Selector */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-        {tiers.map((tier) => (
-          <div
-            key={tier.amount}
-            onClick={() => setSelectedTier(tier.amount)}
-            className={`p-6 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between ${
-              selectedTier === tier.amount
-                ? 'bg-slate-850 border-amber-400 shadow-xl shadow-amber-400/5'
-                : 'bg-slate-900 border-slate-800 hover:border-slate-700'
-            }`}
-          >
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-2xl font-extrabold text-white font-mono-tabular">
-                  ₹{tier.amount}
-                  <span className="text-xs font-normal text-slate-400">
-                    {' '}
-                    / {t(lang, 'year', 'वर्ष')}
+      {/* Tier Selector with Animated Gradient Blob Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 justify-items-center">
+        {tiers.map((tier, idx) => {
+          const gradients = [
+            "bg-gradient-to-r from-emerald-500 via-teal-500 to-amber-400",
+            "bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500",
+            "bg-gradient-to-r from-indigo-500 via-purple-500 to-amber-400",
+          ];
+          const isSelected = selectedTier === tier.amount;
+
+          return (
+            <GradientBlobCard
+              key={tier.amount}
+              width="w-full max-w-[340px]"
+              height="h-[270px]"
+              blobGradient={gradients[idx % gradients.length]}
+              onClick={() => setSelectedTier(tier.amount)}
+              cardClassName={isSelected ? "ring-2 ring-amber-400 scale-[1.02]" : ""}
+            >
+              <div className="flex flex-col justify-between h-full w-full py-1">
+                <div className="flex items-center justify-between w-full">
+                  <span className="text-2xl font-black text-stone-900 dark:text-white font-mono-tabular">
+                    ₹{tier.amount}
+                    <span className="text-xs font-normal text-stone-500 dark:text-stone-400">
+                      {' '}
+                      / {t(lang, 'year', 'वर्ष')}
+                    </span>
                   </span>
-                </span>
-                {selectedTier === tier.amount && (
-                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-400 text-slate-950">
-                    {t(lang, 'Selected', 'चयनित')}
-                  </span>
-                )}
+                  {isSelected ? (
+                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-400 text-stone-950 shadow-xs">
+                      {t(lang, 'Selected', 'चयनित')}
+                    </span>
+                  ) : (
+                    <span className="text-[10px] font-semibold text-stone-400 dark:text-stone-500">
+                      {t(lang, 'Click to choose', 'चुनने के लिए क्लिक करें')}
+                    </span>
+                  )}
+                </div>
+
+                <div className="text-left my-auto space-y-1.5">
+                  <h4 className="text-xs sm:text-sm font-extrabold text-amber-700 dark:text-amber-300">
+                    {tier.title}
+                  </h4>
+                  <p className="text-[11px] text-stone-600 dark:text-stone-300 leading-relaxed font-medium">
+                    {tier.desc}
+                  </p>
+                </div>
+
+                <div className="w-full pt-2 border-t border-stone-200/60 dark:border-white/10 flex items-center justify-between text-[10px] font-bold text-stone-500 dark:text-stone-400">
+                  <span>PBSCN Trust Transparency</span>
+                  <span className="text-amber-600 dark:text-amber-400">100% Direct</span>
+                </div>
               </div>
-              <h4 className="text-sm font-extrabold text-amber-300">
-                {tier.title}
-              </h4>
-              <p className="text-xs text-slate-400 leading-relaxed">
-                {tier.desc}
-              </p>
-            </div>
-          </div>
-        ))}
+            </GradientBlobCard>
+          );
+        })}
       </div>
 
       {/* Official State Bank of India Trust Account Box */}
