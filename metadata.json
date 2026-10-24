@@ -1,0 +1,6 @@
+{
+  "name": "Prabuddha Bharat Social Care Network (PBSCN)",
+  "description": "प्रबुद्ध भारत स्वाभिमान न्यास — 100% Direct Peer-to-Peer Ambedkarite Social Security & Mutual Aid Platform under the philosophy of Dr. B.R. Ambedkar: Pay Back to Society.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
