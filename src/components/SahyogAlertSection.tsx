@@ -26,6 +26,7 @@ import { BharatQrWidget } from './BharatQrWidget';
 import { DhammaChakraIcon, StupaMonumentIllustration } from './DhammaChakraIcon';
 import DraggableCardDemo from './draggable-card-demo-2';
 import { CardStackDemo } from './card-stack-demo';
+import MurmurationDemo from './murmuration-demo';
 import { LangMode, t } from '../utils/i18n';
 
 interface SahyogAlertSectionProps {
@@ -1115,6 +1116,9 @@ export const SahyogAlertSection: React.FC<SahyogAlertSectionProps> = ({
           <DraggableCardDemo lang={lang} />
         </div>
       </div>
+
+      {/* Murmuration Wordmark Flock into JAI BHIM */}
+      <MurmurationDemo lang={lang} />
     </div>
   );
 };
