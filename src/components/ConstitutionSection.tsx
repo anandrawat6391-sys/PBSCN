@@ -6,6 +6,7 @@ import {
   AlertTriangle,
   CheckCircle2,
   BookMarked,
+  Filter,
 } from 'lucide-react';
 import { CONSTITUTION_22_ARTICLES } from '../data/pbscnData';
 import {
@@ -43,20 +44,20 @@ export const ConstitutionSection: React.FC<ConstitutionSectionProps> = ({
 
   let statusReason = t(
     lang,
-    'Member meets all Constitutional Criteria (Age 18–62, 18M Lock-in completed, ≥90% Sahyog participation, and active Trust Fee).',
-    'सदस्य सभी संवैधानिक शर्तों (आयु 18–62, 18-माह लॉक-इन पूर्ण, ≥90% सहयोग भागीदारी और सक्रिय व्यवस्था शुल्क) को पूरा करते हैं।'
+    'Member complies with all Constitutional Articles (Age 18–62, 18-Month Lock-in complete, ≥90% Sahyog participation, and active Trust Maintenance Fee).',
+    'सदस्य संविधान के सभी नियमों (आयु 18–62, 18-माह लॉक-इन पूर्ण, ≥90% सहयोग रिकॉर्ड और सक्रिय व्यवस्था शुल्क) को पूर्ण करते हैं।'
   );
   if (!passesAge) {
     statusReason = t(
       lang,
-      `Article 04: Coverage is valid only between ages 18 and 62 (Selected Age: ${simAge}).`,
-      `अनुच्छेद 04: सुरक्षा कवर केवल 18 से 62 वर्ष की आयु तक मान्य है (चयनित आयु: ${simAge})।`
+      `Article 04: Bereavement coverage is valid between ages 18 and 62 (Selected: ${simAge} years).`,
+      `अनुच्छेद 04: पारिवारिक सुरक्षा कवर केवल 18 से 62 वर्ष की आयु तक मान्य है (वर्तमान: ${simAge} वर्ष)।`
     );
   } else if (!passesLockIn) {
     statusReason = t(
       lang,
-      `Article 05: Member is in the 18-Month Lock-in Period (${18 - simMonths} months remaining).`,
-      `अनुच्छेद 05: सदस्य अभी 18-माह की लॉक-इन अवधि में हैं (${18 - simMonths} माह शेष)।`
+      `Article 05: Member is currently in the 18-Month Lock-in Period (${18 - simMonths} months remaining).`,
+      `अनुच्छेद 05: सदस्य अभी 18-माह की अनिवार्य लॉक-इन अवधि में हैं (${18 - simMonths} माह शेष)।`
     );
   } else if (!passes90Rule) {
     statusReason = t(
@@ -67,8 +68,8 @@ export const ConstitutionSection: React.FC<ConstitutionSectionProps> = ({
   } else if (!simShulkPaid) {
     statusReason = t(
       lang,
-      'Article 10: Annual Vyawastha Shulk renewal is pending.',
-      'अनुच्छेद 10: वार्षिक व्यवस्था शुल्क का नवीनीकरण बाकी है।'
+      'Article 10: Annual Portal Maintenance Fee renewal is pending.',
+      'अनुच्छेद 10: वार्षिक व्यवस्था शुल्क का नवीनीकरण लंबित है।'
     );
   }
 
@@ -91,240 +92,225 @@ export const ConstitutionSection: React.FC<ConstitutionSectionProps> = ({
 
   const categories = [
     { id: 'ALL', labelEn: 'All 22 Articles', labelHi: 'सभी 22 अनुच्छेद' },
-    { id: 'PHILOSOPHY', labelEn: 'Philosophy', labelHi: 'विचारधारा' },
-    { id: 'ELIGIBILITY', labelEn: 'Eligibility', labelHi: 'पात्रता नियम' },
-    { id: 'SAHYOG_RULES', labelEn: 'Sahyog Rules', labelHi: 'सहयोग नियम' },
-    { id: 'AUDIT_GOVERNANCE', labelEn: 'Audit & Governance', labelHi: 'ऑडिट व प्रशासन' },
+    { id: 'PHILOSOPHY', labelEn: 'Philosophy', labelHi: 'संवैधानिक विचारधारा' },
+    { id: 'ELIGIBILITY', labelEn: 'Eligibility Rules', labelHi: 'पात्रता नियम' },
+    { id: 'SAHYOG_RULES', labelEn: 'Sahyog Rules', labelHi: 'सहयोग प्रक्रिया' },
+    { id: 'AUDIT_GOVERNANCE', labelEn: 'Audit & Physical Verification', labelHi: 'ऑडिट व भौतिक सत्यापन' },
     { id: 'WELFARE', labelEn: 'Welfare Schemes', labelHi: 'कल्याण योजनाएं' },
   ];
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-xs">
-        <div className="text-xs font-bold uppercase tracking-wider text-blue-800">
-          {t(
-            lang,
-            'Mutual Care Constitution & By-Laws (niyamawali)',
-            'आपसी सहयोग संविधान एवं 22-सूत्रीय नियमावली (niyamawali)'
-          )}
+    <div className="space-y-8">
+      {/* Sovereign Header */}
+      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <div className="text-xs font-bold uppercase tracking-wider text-amber-400">
+            {t(
+              lang,
+              'Supreme Governing Charter of PBSCN',
+              'प्रबुद्ध भारत स्वाभिमान न्यास की सर्वोच्च नियमावली'
+            )}
+          </div>
+          <h2 className="text-xl sm:text-2xl font-extrabold text-white mt-1">
+            {t(
+              lang,
+              'The 22-Article Constitution (Niyamawali)',
+              '22-सूत्रीय संवैधानिक नियमावली'
+            )}
+          </h2>
+          <p className="text-xs text-slate-300 mt-1 max-w-2xl leading-relaxed">
+            {t(
+              lang,
+              'Transparent, legally bound principles under Indian Trusts Act 1882 ensuring 100% direct peer-to-peer solidarity with zero leakages.',
+              '100% पारदर्शी, स्वाभिमान-आधारित नियम जो यह सुनिश्चित करते हैं कि हर दिवंगत परिवार को बिना किसी बिचौलिए या पक्षपात के सीधा जन-सहयोग मिले।'
+            )}
+          </p>
         </div>
-        <h2 className="text-xl font-extrabold text-slate-900 mt-0.5">
-          {t(
-            lang,
-            '22-Article Sovereign Constitutional Charter & Live Rule Engine',
-            'प्रबुद्ध भारत स्वाभिमान न्यास — 22-अनुच्छेद संवैधानिक नियमावली एवं पात्रता सिम्युलेटर'
-          )}
-        </h2>
-        <p className="text-xs text-slate-600 mt-1 max-w-3xl">
-          {t(
-            lang,
-            'Transparent, rule-bound discipline inspired by Babasaheb Dr. B.R. Ambedkar’s constitutional principles: Age 18–60 registration (coverage up to 62), 18-Month Lock-in Period, and 90% Mandatory Sahyog Participation.',
-            'बाबासाहेब डॉ. बी.आर. अम्बेडकर के संवैधानिक अनुशासन पर आधारित पारदर्शी नियम: 18–60 वर्ष पंजीकरण आयु (62 वर्ष तक सुरक्षा), 18-माह लॉक-इन अवधि और 90% अनिवार्य सहयोग नियम।'
-          )}
-        </p>
       </div>
 
-      {/* Live Constitutional Eligibility Simulator */}
-      <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-xs space-y-4">
-        <div className="flex items-center gap-2.5 pb-3 border-b border-slate-100">
-          <Scale className="w-5 h-5 text-blue-800" />
+      {/* Interactive Compliance Simulator */}
+      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+        <div className="flex items-center gap-2.5 border-b border-slate-800 pb-3">
+          <Scale className="w-5 h-5 text-amber-400" />
+          <h3 className="text-base font-extrabold text-white">
+            {t(
+              lang,
+              'Interactive Constitutional Compliance Simulator',
+              'संवैधानिक पात्रता सिम्युलेटर'
+            )}
+          </h3>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 text-xs">
           <div>
-            <h3 className="text-base font-extrabold text-slate-900">
-              {t(
-                lang,
-                'Interactive Constitutional Rule Simulator (Articles 4, 5, 6 & 10)',
-                'इंटरएक्टिव संवैधानिक पात्रता सिम्युलेटर (अनुच्छेद 4, 5, 6 एवं 10 की जांच करें)'
-              )}
-            </h3>
-            <p className="text-xs text-slate-500">
-              {t(
-                lang,
-                'Test how Age (18–62), Lock-in Tenure (18 Months), and the 90% Participation Rule determine Valid & Verified status.',
-                'आयु (18–62 वर्ष), लॉक-इन अवधि (18 माह) और 90% सहयोग नियम बदलकर देखें कि सदस्य की वैधता कैसे तय होती है।'
-              )}
-            </p>
+            <label className="block font-bold text-slate-300 mb-1">
+              {t(lang, `Member Age: ${simAge} Yrs`, `सदस्य की आयु: ${simAge} वर्ष`)}
+            </label>
+            <input
+              type="range"
+              min={16}
+              max={65}
+              value={simAge}
+              onChange={(e) => setSimAge(Number(e.target.value))}
+              className="w-full accent-amber-400 cursor-pointer"
+            />
+            <div className="flex justify-between text-[10px] text-slate-400 font-mono-tabular">
+              <span>18 (Min)</span>
+              <span>60 (Max Reg)</span>
+              <span>62 (Cap)</span>
+            </div>
+          </div>
+
+          <div>
+            <label className="block font-bold text-slate-300 mb-1">
+              {t(lang, `Tenure: ${simMonths} Months`, `सदस्यता: ${simMonths} माह`)}
+            </label>
+            <input
+              type="range"
+              min={1}
+              max={36}
+              value={simMonths}
+              onChange={(e) => setSimMonths(Number(e.target.value))}
+              className="w-full accent-amber-400 cursor-pointer"
+            />
+            <div className="flex justify-between text-[10px] text-slate-400 font-mono-tabular">
+              <span>0M</span>
+              <span>18M (Lock-in)</span>
+              <span>36M</span>
+            </div>
+          </div>
+
+          <div>
+            <label className="block font-bold text-slate-300 mb-1">
+              {t(lang, `Appeals Completed (${simAppealsDone}/${simTotalAppeals})`, `सहयोग किया (${simAppealsDone}/${simTotalAppeals})`)}
+            </label>
+            <input
+              type="range"
+              min={0}
+              max={simTotalAppeals}
+              value={simAppealsDone}
+              onChange={(e) => setSimAppealsDone(Number(e.target.value))}
+              className="w-full accent-amber-400 cursor-pointer"
+            />
+            <div className="flex justify-between text-[10px] text-slate-400 font-mono-tabular">
+              <span>0%</span>
+              <span>90% (Mandatory)</span>
+              <span>100%</span>
+            </div>
+          </div>
+
+          <div>
+            <label className="block font-bold text-slate-300 mb-1">
+              {t(lang, 'Sahyog Ratio', 'सहयोग अनुपात')}
+            </label>
+            <div className="text-xl font-mono-tabular font-extrabold text-amber-300 pt-1">
+              {participationRate}%
+            </div>
+            <div className="text-[10px] text-slate-400">
+              {passes90Rule ? t(lang, 'Above 90% Rule ✓', '90% नियम पूर्ण ✓') : t(lang, 'Below 90% Rule ✗', '90% से कम ✗')}
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 pt-4">
+            <input
+              id="sim-fee"
+              type="checkbox"
+              checked={simShulkPaid}
+              onChange={(e) => setSimShulkPaid(e.target.checked)}
+              className="w-4 h-4 accent-amber-400 rounded cursor-pointer"
+            />
+            <label htmlFor="sim-fee" className="font-bold text-slate-300 cursor-pointer">
+              {t(lang, 'Annual Fee Active', 'व्यवस्था शुल्क जमा है')}
+            </label>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
-          <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs">
-            <div>
-              <label className="block font-bold text-slate-700 mb-1">
-                {t(
-                  lang,
-                  `Member Age: ${simAge} Years (Rule: 18–62)`,
-                  `सदस्य की आयु: ${simAge} वर्ष (नियम: 18–62)`
-                )}
-              </label>
-              <input
-                type="range"
-                min={16}
-                max={68}
-                value={simAge}
-                onChange={(e) => setSimAge(Number(e.target.value))}
-                className="w-full accent-blue-800"
-              />
-            </div>
+        {/* Compliance Result Box */}
+        <div
+          className={`p-4 rounded-xl border ${
+            isFullyEligible
+              ? 'bg-emerald-950/80 border-emerald-500/40 text-emerald-200'
+              : 'bg-amber-950/80 border-amber-500/40 text-amber-200'
+          }`}
+        >
+          <div className="flex items-center gap-2">
+            {isFullyEligible ? (
+              <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
+            ) : (
+              <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0" />
+            )}
+            <span className="text-xs font-extrabold uppercase tracking-wider">
+              {isFullyEligible
+                ? t(lang, 'FULL CONSTITUTIONAL COMPLIANCE CERTIFIED', 'संवैधानिक पात्रता पूर्ण एवं प्रमाणित')
+                : t(lang, 'COMPLIANCE CRITERIA PENDING', 'संवैधानिक शर्तें अभी अधूरी हैं')}
+            </span>
+          </div>
+          <p className="text-xs text-slate-300 mt-1 leading-relaxed">{statusReason}</p>
+        </div>
+      </div>
 
-            <div>
-              <label className="block font-bold text-slate-700 mb-1">
-                {t(
-                  lang,
-                  `Membership Completed: ${simMonths} Months (Lock-in: 18M)`,
-                  `सदस्यता अवधि: ${simMonths} माह (लॉक-इन: 18 माह)`
-                )}
-              </label>
-              <input
-                type="range"
-                min={1}
-                max={48}
-                value={simMonths}
-                onChange={(e) => setSimMonths(Number(e.target.value))}
-                className="w-full accent-blue-800"
-              />
-            </div>
-
-            <div>
-              <label className="block font-bold text-slate-700 mb-1">
-                {t(
-                  lang,
-                  `Appeals Contributed: ${simAppealsDone} of ${simTotalAppeals}`,
-                  `सहयोग की गई अपीलें: ${simAppealsDone} / ${simTotalAppeals}`
-                )}
-              </label>
-              <input
-                type="range"
-                min={0}
-                max={simTotalAppeals}
-                value={simAppealsDone}
-                onChange={(e) => setSimAppealsDone(Number(e.target.value))}
-                className="w-full accent-blue-800"
-              />
-            </div>
-
-            <div className="flex items-center gap-2 pt-4">
-              <input
-                id="sim-shulk"
-                type="checkbox"
-                checked={simShulkPaid}
-                onChange={(e) => setSimShulkPaid(e.target.checked)}
-                className="w-4 h-4 accent-blue-800 rounded"
-              />
-              <label htmlFor="sim-shulk" className="font-bold text-slate-800">
-                {t(
-                  lang,
-                  'Annual Vyawastha Shulk Paid (Article 10)',
-                  'वार्षिक व्यवस्था शुल्क जमा है (अनुच्छेद 10)'
-                )}
-              </label>
-            </div>
+      {/* Category Pills & Search */}
+      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+          <div className="flex flex-wrap items-center gap-1.5">
+            {categories.map((cat) => (
+              <button
+                key={cat.id}
+                type="button"
+                onClick={() => setCategoryFilter(cat.id)}
+                className={`px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer ${
+                  categoryFilter === cat.id
+                    ? 'bg-blue-600 text-white shadow-sm font-extrabold'
+                    : 'bg-slate-950 text-slate-400 hover:text-white border border-slate-800'
+                }`}
+              >
+                {lang === 'en' ? cat.labelEn : cat.labelHi}
+              </button>
+            ))}
           </div>
 
-          <div className="lg:col-span-5">
+          <div className="w-full sm:w-64 relative">
+            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder={t(lang, 'Search 22 articles...', '22 नियम खोजें...')}
+              className="w-full pl-9 pr-3 py-2 rounded-xl border border-slate-700 bg-slate-950 text-white placeholder-slate-500 focus:border-blue-500 focus:outline-none"
+            />
+          </div>
+        </div>
+
+        {/* 22 Articles List */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {filteredArticles.map((art) => (
             <div
-              className={`p-4 rounded-xl border ${
-                isFullyEligible
-                  ? 'bg-emerald-50 border-emerald-300'
-                  : 'bg-amber-50 border-amber-300'
-              }`}
+              key={art.articleNumber}
+              className="p-5 rounded-2xl bg-slate-950 border border-slate-800/80 hover:border-blue-700/60 transition-all space-y-2"
             >
               <div className="flex items-center justify-between">
-                <span className="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase text-slate-900">
-                  {isFullyEligible ? (
-                    <CheckCircle2 className="w-4 h-4 text-emerald-700" />
-                  ) : (
-                    <AlertTriangle className="w-4 h-4 text-amber-700" />
-                  )}
-                  {isFullyEligible
-                    ? t(lang, 'VALID & VERIFIED MEMBER', 'वैध एवं सत्यापित सदस्य')
-                    : t(lang, 'INELIGIBLE / UNDER LOCK-IN', 'अपात्र / लॉक-इन अधीन')}
+                <span className="px-2.5 py-0.5 rounded text-[10px] font-mono-tabular font-extrabold bg-blue-950 text-blue-300 border border-blue-800">
+                  {t(lang, `Article ${art.articleNumber}`, `अनुच्छेद ${art.articleNumber}`)}
                 </span>
-                <span className="font-mono-tabular text-sm font-extrabold text-blue-900">
-                  {participationRate}% Sahyog
-                </span>
-              </div>
-              <p className="text-xs text-slate-700 mt-2 leading-relaxed">
-                {statusReason}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Filter Bar for 22 Articles */}
-      <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div className="relative flex-1">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder={t(
-              lang,
-              'Search all 22 Constitutional Articles (e.g., Lock-in, 90%, Audit, Kanyadan)...',
-              '22 संवैधानिक अनुच्छेदों में खोजें (जैसे: लॉक-इन, 90%, ऑडिट, कन्यादान)...'
-            )}
-            className="w-full pl-9 pr-3 py-2 rounded-lg border border-slate-300 text-xs text-slate-900"
-          />
-        </div>
-
-        <div className="flex flex-wrap gap-1.5 text-xs">
-          {categories.map((cat) => (
-            <button
-              key={cat.id}
-              type="button"
-              onClick={() => setCategoryFilter(cat.id)}
-              className={`px-2.5 py-1.5 rounded-lg font-bold transition-colors cursor-pointer ${
-                categoryFilter === cat.id
-                  ? 'bg-blue-800 text-white'
-                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-              }`}
-            >
-              {lang === 'en' ? cat.labelEn : cat.labelHi}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* 22 Articles Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {filteredArticles.map((art) => (
-          <div
-            key={art.articleNumber}
-            className="bg-white border border-slate-200 rounded-xl p-4 shadow-xs flex flex-col justify-between space-y-3"
-          >
-            <div>
-              <div className="flex items-center justify-between gap-2">
-                <span className="px-2.5 py-0.5 rounded bg-slate-900 text-amber-300 font-mono-tabular text-xs font-extrabold">
-                  {t(
-                    lang,
-                    `ARTICLE ${String(art.articleNumber).padStart(2, '0')}`,
-                    `अनुच्छेद ${String(art.articleNumber).padStart(2, '0')}`
-                  )}
-                </span>
-                <span className="text-[11px] font-bold text-blue-800">
+                <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
                   {art.category}
                 </span>
               </div>
 
-              <h4 className="text-sm font-extrabold text-slate-900 mt-2">
+              <h4 className="text-sm font-extrabold text-white">
                 {lang === 'en' ? art.titleEn : art.titleHi}
               </h4>
-              <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+
+              <p className="text-xs text-slate-300 leading-relaxed">
                 {lang === 'en' ? art.summaryEn : art.summaryHi}
               </p>
-            </div>
 
-            <div className="pt-2.5 border-t border-slate-100 flex items-center justify-between text-[11px] font-mono-tabular text-slate-500">
-              <span className="flex items-center gap-1 font-semibold text-slate-700">
-                <BookMarked className="w-3.5 h-3.5 text-blue-700" />
+              <div className="mt-2 pt-2 border-t border-slate-800/60 text-[11px] font-mono-tabular text-amber-300 font-semibold">
                 {art.clauseRule}
-              </span>
-              <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );

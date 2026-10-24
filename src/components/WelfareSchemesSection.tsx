@@ -4,12 +4,9 @@ import {
   GraduationCap,
   CheckCircle2,
   AlertCircle,
-  BookOpen,
-  Award,
-  Sparkles,
 } from 'lucide-react';
 import { FELLOWSHIP_MENTORS } from '../data/pbscnData';
-import { evaluateKanyadanEligibility, formatINR } from '../utils/pbscnRules';
+import { formatINR } from '../utils/pbscnRules';
 import { LangMode, t } from '../utils/i18n';
 
 interface WelfareSchemesSectionProps {
@@ -32,12 +29,52 @@ export const WelfareSchemesSection: React.FC<WelfareSchemesSectionProps> = ({
   const [marksPercentage, setMarksPercentage] = useState<number>(78);
   const [familyIncome, setFamilyIncome] = useState<number>(320000);
 
-  const kanyadanResult = evaluateKanyadanEligibility({
-    membershipMonths,
-    participationRate,
-    daysBeforeMarriage: noticeDays,
-    vyawasthaShulkActive: shulkActive,
-  });
+  // Dynamic Kanyadan Validation
+  const reasons: string[] = [];
+  if (membershipMonths < 12) {
+    reasons.push(
+      t(
+        lang,
+        `Active parent membership must be at least 12 months (Current: ${membershipMonths} months).`,
+        `सदस्यता कम से कम 12 माह पुरानी होनी चाहिए (वर्तमान: ${membershipMonths} माह)।`
+      )
+    );
+  }
+  if (participationRate < 90) {
+    reasons.push(
+      t(
+        lang,
+        `Sahyog participation must be at least 90% (Current: ${participationRate}%).`,
+        `सहयोग भागीदारी कम से कम 90% होनी चाहिए (वर्तमान: ${participationRate}%)।`
+      )
+    );
+  }
+  if (noticeDays < 90) {
+    reasons.push(
+      t(
+        lang,
+        `Application must be submitted at least 90 days before marriage (Current: ${noticeDays} days).`,
+        `आवेदन विवाह से कम से कम 90 दिन पहले होना चाहिए (वर्तमान: ${noticeDays} दिन)।`
+      )
+    );
+  }
+  if (!shulkActive) {
+    reasons.push(
+      t(
+        lang,
+        'Annual Portal Maintenance Fee must be actively renewed.',
+        'वार्षिक व्यवस्था शुल्क जमा होना अनिवार्य है।'
+      )
+    );
+  }
+
+  const kanyadanEligible = reasons.length === 0;
+  let estimatedGrant = 0;
+  if (kanyadanEligible) {
+    const seniorityBonus = Math.min(3, Math.floor(membershipMonths / 12)) * 75000;
+    const fullComplianceBonus = participationRate >= 98 ? 75000 : 0;
+    estimatedGrant = Math.min(500000, 200000 + seniorityBonus + fullComplianceBonus);
+  }
 
   // Fellowship Grant Calculation
   const fellowshipBaseMap = {
@@ -47,78 +84,78 @@ export const WelfareSchemesSection: React.FC<WelfareSchemesSectionProps> = ({
     OVERSEAS_MASTERS: 150000,
   };
   const fellowshipEligible = marksPercentage >= 60 && familyIncome <= 800000;
-  const fellowshipGrant = fellowshipEligible
-    ? fellowshipBaseMap[examCategory]
-    : 0;
+  const fellowshipGrant = fellowshipEligible ? fellowshipBaseMap[examCategory] : 0;
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-xs">
-        <div className="text-xs font-bold uppercase tracking-wider text-blue-800">
-          {t(
-            lang,
-            'Social Empowerment & Pay Back to Society Initiatives',
-            'सामाजिक सशक्तिकरण एवं "Pay Back to Society" कल्याणकारी योजनाएं'
-          )}
+    <div className="space-y-8">
+      {/* Header Banner */}
+      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <div className="text-xs font-bold uppercase tracking-wider text-amber-400">
+            {t(
+              lang,
+              'Social Empowerment & Welfare Schemes',
+              'सामाजिक सशक्तिकरण एवं कल्याणकारी योजनाएं'
+            )}
+          </div>
+          <h2 className="text-xl sm:text-2xl font-extrabold text-white mt-1">
+            {t(
+              lang,
+              'Savitribai Phule Kanyadan & Babasaheb Higher Education Fellowship',
+              'सावित्रीबाई फुले कन्यादान सम्मान एवं बाबासाहेब उच्च शिक्षा फेलोशिप'
+            )}
+          </h2>
+          <p className="text-xs text-slate-300 mt-1 max-w-3xl leading-relaxed">
+            {t(
+              lang,
+              'Beyond bereavement mutual aid, PBSCN empowers community daughters with marriage grants (₹2 Lakh to ₹5 Lakh) and meritorious students preparing for Civil Services, IIT/NEET, and Overseas PhDs.',
+              'दिवंगत परिवारों की सुरक्षा के साथ-साथ यह नेटवर्क बेटियों के सम्मानजनक विवाह हेतु ₹2 लाख से ₹5 लाख तक का सीधा अनुदान और मेधावी छात्रों के लिए उच्च शिक्षा कोचिंग फेलोशिप प्रदान करता है।'
+            )}
+          </p>
         </div>
-        <h2 className="text-xl font-extrabold text-slate-900 mt-0.5">
-          {t(
-            lang,
-            'Rashtramata Savitribai Phule Kanyadan & Babasaheb Higher Education Fellowship',
-            'राष्ट्रमाता सावित्रीबाई फुले कन्यादान योजना एवं बाबासाहेब उच्च शिक्षा फेलोशिप'
-          )}
-        </h2>
-        <p className="text-xs text-slate-600 mt-1 max-w-3xl">
-          {t(
-            lang,
-            'Beyond bereavement support, PBSCN empowers our community’s daughters and meritorious students preparing for UPSC, State PSC, NEET, JEE, CLAT, and Overseas Master’s/PhD programs.',
-            'दिवंगत परिवारों की सुरक्षा के साथ-साथ हमारा नेटवर्क बेटियों के सम्मानजनक विवाह और मेधावी छात्र-छात्राओं की UPSC, पीसीएस, NEET, JEE एवं विदेश में उच्च शिक्षा के लिए सीधा अनुदान देता है।'
-          )}
-        </p>
       </div>
 
-      {/* Two-Column Interactive Scheme Calculators */}
+      {/* Two Calculators Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Scheme 1: Rashtramata Savitribai Phule Kanyadan Scheme */}
-        <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-xs flex flex-col justify-between space-y-4">
+        {/* Scheme 1: Savitribai Phule Kanyadan Scheme */}
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl flex flex-col justify-between space-y-5">
           <div className="space-y-4">
-            <div className="flex items-start gap-3 pb-3 border-b border-slate-100">
-              <div className="w-10 h-10 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 flex items-center justify-center shrink-0">
+            <div className="flex items-start gap-3.5 pb-4 border-b border-slate-800">
+              <div className="w-10 h-10 rounded-xl bg-rose-950 border border-rose-800/60 text-rose-300 flex items-center justify-center shrink-0">
                 <Heart className="w-5 h-5" />
               </div>
               <div>
-                <span className="text-[11px] font-bold uppercase tracking-wider text-rose-700">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-rose-400">
                   {t(
                     lang,
-                    'Grant: ₹2,00,000 to ₹5,00,000',
-                    'अनुदान: ₹2,00,000 से ₹5,00,000'
+                    'Grant: ₹2,00,000 to ₹5,00,000 Direct Aid',
+                    'अनुदान: ₹2,00,000 से ₹5,00,000 तक सीधा सहयोग'
                   )}
                 </span>
-                <h3 className="text-base font-extrabold text-slate-900">
+                <h3 className="text-base font-extrabold text-white mt-0.5">
                   {t(
                     lang,
-                    'Rashtramata Savitribai Phule Kanyadan Samman Scheme',
+                    'Rashtramata Savitribai Phule Kanyadan Scheme',
                     'राष्ट्रमाता सावित्रीबाई फुले कन्यादान सम्मान योजना'
                   )}
                 </h3>
-                <p className="text-xs text-slate-500 mt-0.5">
+                <p className="text-xs text-slate-400 mt-1">
                   {t(
                     lang,
-                    'Requires 12+ months active membership, 90%+ Sahyog participation, and 90 days advance application.',
-                    'पात्रता: न्यूनतम 1 वर्ष पुरानी सदस्यता, 90%+ सहयोग रिकॉर्ड और विवाह से 90 दिन पूर्व आवेदन।'
+                    'Eligibility: 12+ months parent membership, 90%+ Sahyog participation, and 90-day advance notice.',
+                    'न्यूनतम 12 माह की सदस्यता, 90%+ सहयोग भागीदारी और विवाह से 90 दिन पूर्व आवेदन अनिवार्य।'
                   )}
                 </p>
               </div>
             </div>
 
-            {/* Interactive Controls */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs">
+            {/* Interactive Inputs */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
               <div>
-                <label className="block font-bold text-slate-700 mb-1">
+                <label className="block font-bold text-slate-300 mb-1.5">
                   {t(
                     lang,
-                    `Parent Membership Tenure (${membershipMonths} Months)`,
+                    `Parent Membership (${membershipMonths} Months)`,
                     `सदस्यता अवधि (${membershipMonths} माह)`
                   )}
                 </label>
@@ -128,9 +165,9 @@ export const WelfareSchemesSection: React.FC<WelfareSchemesSectionProps> = ({
                   max={60}
                   value={membershipMonths}
                   onChange={(e) => setMembershipMonths(Number(e.target.value))}
-                  className="w-full accent-blue-800"
+                  className="w-full accent-amber-400 cursor-pointer"
                 />
-                <div className="flex justify-between text-[10px] text-slate-400 font-mono-tabular">
+                <div className="flex justify-between text-[10px] text-slate-400 font-mono-tabular mt-1">
                   <span>3M</span>
                   <span>Min: 12M</span>
                   <span>60M</span>
@@ -138,10 +175,10 @@ export const WelfareSchemesSection: React.FC<WelfareSchemesSectionProps> = ({
               </div>
 
               <div>
-                <label className="block font-bold text-slate-700 mb-1">
+                <label className="block font-bold text-slate-300 mb-1.5">
                   {t(
                     lang,
-                    `Sahyog Participation (${participationRate}%)`,
+                    `Sahyog Compliance (${participationRate}%)`,
                     `सहयोग भागीदारी (${participationRate}%)`
                   )}
                 </label>
@@ -151,9 +188,9 @@ export const WelfareSchemesSection: React.FC<WelfareSchemesSectionProps> = ({
                   max={100}
                   value={participationRate}
                   onChange={(e) => setParticipationRate(Number(e.target.value))}
-                  className="w-full accent-blue-800"
+                  className="w-full accent-amber-400 cursor-pointer"
                 />
-                <div className="flex justify-between text-[10px] text-slate-400 font-mono-tabular">
+                <div className="flex justify-between text-[10px] text-slate-400 font-mono-tabular mt-1">
                   <span>50%</span>
                   <span>Rule: 90%</span>
                   <span>100%</span>
@@ -161,11 +198,11 @@ export const WelfareSchemesSection: React.FC<WelfareSchemesSectionProps> = ({
               </div>
 
               <div>
-                <label className="block font-bold text-slate-700 mb-1">
+                <label className="block font-bold text-slate-300 mb-1.5">
                   {t(
                     lang,
-                    'Advance Notice Before Marriage (Days)',
-                    'विवाह से कितने दिन पूर्व आवेदन?'
+                    'Days Before Wedding *',
+                    'विवाह से कितने दिन पूर्व आवेदन? *'
                   )}
                 </label>
                 <input
@@ -174,117 +211,98 @@ export const WelfareSchemesSection: React.FC<WelfareSchemesSectionProps> = ({
                   max={365}
                   value={noticeDays}
                   onChange={(e) => setNoticeDays(Number(e.target.value))}
-                  className="w-full rounded-lg border border-slate-300 px-3 py-2 font-mono-tabular font-bold text-slate-900"
+                  className="w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 text-white font-mono-tabular font-bold"
                 />
               </div>
 
-              <div className="flex items-center gap-2 pt-4">
+              <div className="flex items-center gap-2 pt-5">
                 <input
-                  id="kanyadan-shulk"
+                  id="kanyadan-fee"
                   type="checkbox"
                   checked={shulkActive}
                   onChange={(e) => setShulkActive(e.target.checked)}
-                  className="w-4 h-4 accent-blue-800 rounded"
+                  className="w-4 h-4 accent-amber-400 rounded cursor-pointer"
                 />
-                <label
-                  htmlFor="kanyadan-shulk"
-                  className="font-bold text-slate-800"
-                >
-                  {t(
-                    lang,
-                    'Annual Vyawastha Shulk Active',
-                    'वार्षिक व्यवस्था शुल्क जमा है'
-                  )}
+                <label htmlFor="kanyadan-fee" className="font-bold text-slate-300 cursor-pointer">
+                  {t(lang, 'Annual Trust Fee Active', 'वार्षिक व्यवस्था शुल्क जमा है')}
                 </label>
               </div>
             </div>
           </div>
 
-          {/* Kanyadan Result Box */}
+          {/* Result Badge */}
           <div
             className={`p-4 rounded-xl border ${
-              kanyadanResult.eligible
-                ? 'bg-emerald-50/90 border-emerald-300'
-                : 'bg-amber-50/90 border-amber-300'
+              kanyadanEligible
+                ? 'bg-emerald-950/80 border-emerald-500/40 text-emerald-200'
+                : 'bg-amber-950/80 border-amber-500/40 text-amber-200'
             }`}
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                {kanyadanResult.eligible ? (
-                  <CheckCircle2 className="w-5 h-5 text-emerald-700 shrink-0" />
+                {kanyadanEligible ? (
+                  <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
                 ) : (
-                  <AlertCircle className="w-5 h-5 text-amber-700 shrink-0" />
+                  <AlertCircle className="w-5 h-5 text-amber-400 shrink-0" />
                 )}
-                <span className="text-xs font-extrabold uppercase tracking-wider text-slate-900">
-                  {kanyadanResult.eligible
-                    ? t(
-                        lang,
-                        'ELIGIBLE FOR KANYADAN SAMMAN GRANT',
-                        'कन्यादान सम्मान अनुदान के लिए पात्र'
-                      )
-                    : t(
-                        lang,
-                        'REQUIREMENTS PENDING FOR KANYADAN GRANT',
-                        'कन्यादान अनुदान की शर्तें अधूरी हैं'
-                      )}
+                <span className="text-xs font-extrabold uppercase tracking-wider">
+                  {kanyadanEligible
+                    ? t(lang, 'Eligible for Kanyadan Grant', 'कन्यादान अनुदान के लिए पात्र')
+                    : t(lang, 'Conditions Incomplete', 'शर्तें अभी अधूरी हैं')}
                 </span>
               </div>
-              <span className="text-lg font-mono-tabular font-extrabold text-emerald-800">
-                {formatINR(kanyadanResult.estimatedGrantInr)}
+              <span className="text-lg font-mono-tabular font-extrabold text-amber-300">
+                {formatINR(estimatedGrant)}
               </span>
             </div>
 
-            {kanyadanResult.reasons.length > 0 && (
-              <ul className="mt-2 space-y-1 text-xs text-amber-900 list-disc list-inside">
-                {kanyadanResult.reasons.map((r) => (
-                  <li key={r}>{r}</li>
+            {reasons.length > 0 && (
+              <ul className="mt-2.5 space-y-1 text-xs text-amber-300/90 list-disc list-inside">
+                {reasons.map((r, i) => (
+                  <li key={i}>{r}</li>
                 ))}
               </ul>
             )}
           </div>
         </div>
 
-        {/* Scheme 2: Babasaheb Higher Education & Coaching Fellowship */}
-        <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-xs flex flex-col justify-between space-y-4">
+        {/* Scheme 2: Babasaheb Education & Mentorship Fellowship */}
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl flex flex-col justify-between space-y-5">
           <div className="space-y-4">
-            <div className="flex items-start gap-3 pb-3 border-b border-slate-100">
-              <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-200 text-blue-800 flex items-center justify-center shrink-0">
+            <div className="flex items-start gap-3.5 pb-4 border-b border-slate-800">
+              <div className="w-10 h-10 rounded-xl bg-blue-950 border border-blue-800/60 text-blue-300 flex items-center justify-center shrink-0">
                 <GraduationCap className="w-5 h-5" />
               </div>
               <div>
-                <span className="text-[11px] font-bold uppercase tracking-wider text-blue-800">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-blue-400">
                   {t(
                     lang,
-                    'UPSC · State PSC · NEET · JEE · CLAT · Overseas PhD',
-                    'UPSC · स्टेट पीसीएस · NEET · JEE · CLAT · विदेश शिक्षा'
+                    'Grant: Up to ₹1,50,000 + 1-on-1 Mentorship',
+                    'अनुदान: ₹1,50,000 तक + आईएएस/आईपीएस मेंटरशिप'
                   )}
                 </span>
-                <h3 className="text-base font-extrabold text-slate-900">
+                <h3 className="text-base font-extrabold text-white mt-0.5">
                   {t(
                     lang,
-                    'Babasaheb Dr. B.R. Ambedkar Higher Education Fellowship',
-                    'बाबासाहेब डॉ. बी.आर. अम्बेडकर उच्च शिक्षा एवं कोचिंग फेलोशिप'
+                    'Babasaheb Higher Education & Civil Services Fellowship',
+                    'बाबासाहेब उच्च शिक्षा एवं सिविल सेवा फेलोशिप'
                   )}
                 </h3>
-                <p className="text-xs text-slate-500 mt-0.5">
+                <p className="text-xs text-slate-400 mt-1">
                   {t(
                     lang,
-                    'Direct coaching & tuition grant plus 1-on-1 mentorship by IAS, IPS, AIIMS & IIT officers from Cadre A & C.',
-                    'संवर्ग A व C के वरिष्ठ IAS, IPS, डॉक्टर और प्रोफेसरों द्वारा मार्गदर्शन एवं सीधा कोचिंग/ट्यूशन अनुदान।'
+                    'Guided by senior IAS/IPS officers, doctors, and High Court advocates of Cadre A and C.',
+                    'संवर्ग A एवं C के वरिष्ठ प्रशासनिक अधिकारियों, न्यायाधीशों व डॉक्टरों द्वारा रविवार मार्गदर्शन।'
                   )}
                 </p>
               </div>
             </div>
 
-            {/* Fellowship Controls */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs">
-              <div className="sm:col-span-2">
-                <label className="block font-bold text-slate-700 mb-1">
-                  {t(
-                    lang,
-                    'Select Target Competitive Exam / Track',
-                    'प्रतियोगी परीक्षा / उच्च शिक्षा श्रेणी चुनें'
-                  )}
+            {/* Inputs */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+              <div>
+                <label className="block font-bold text-slate-300 mb-1.5">
+                  {t(lang, 'Target Exam *', 'लक्षित परीक्षा *')}
                 </label>
                 <select
                   value={examCategory}
@@ -297,30 +315,18 @@ export const WelfareSchemesSection: React.FC<WelfareSchemesSectionProps> = ({
                         | 'OVERSEAS_MASTERS'
                     )
                   }
-                  className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 font-bold text-slate-900"
+                  className="w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 text-white font-bold"
                 >
-                  <option value="UPSC_PSC">
-                    UPSC Civil Services / State PSC (Grant up to ₹1,00,000)
-                  </option>
-                  <option value="NEET_JEE">
-                    NEET Medical / IIT-JEE Engineering (Grant up to ₹85,000)
-                  </option>
-                  <option value="CLAT_JUDICIARY">
-                    CLAT Law / Judicial Services PCS-J (Grant up to ₹75,000)
-                  </option>
-                  <option value="OVERSEAS_MASTERS">
-                    Overseas Master’s / PhD Fellowship (Grant up to ₹1,50,000)
-                  </option>
+                  <option value="UPSC_PSC">UPSC / State PSC</option>
+                  <option value="NEET_JEE">NEET / IIT-JEE</option>
+                  <option value="CLAT_JUDICIARY">CLAT / Judiciary</option>
+                  <option value="OVERSEAS_MASTERS">Overseas Masters/PhD</option>
                 </select>
               </div>
 
               <div>
-                <label className="block font-bold text-slate-700 mb-1">
-                  {t(
-                    lang,
-                    `Previous Qualifying Exam Marks (${marksPercentage}%)`,
-                    `पिछली परीक्षा के अंक (${marksPercentage}%)`
-                  )}
+                <label className="block font-bold text-slate-300 mb-1.5">
+                  {t(lang, 'Qualifying Marks *', 'अर्हक परीक्षा अंक (%) *')}
                 </label>
                 <input
                   type="number"
@@ -328,117 +334,98 @@ export const WelfareSchemesSection: React.FC<WelfareSchemesSectionProps> = ({
                   max={100}
                   value={marksPercentage}
                   onChange={(e) => setMarksPercentage(Number(e.target.value))}
-                  className="w-full rounded-lg border border-slate-300 px-3 py-2 font-mono-tabular font-bold text-slate-900"
+                  className="w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 text-white font-mono-tabular font-bold"
                 />
               </div>
 
               <div>
-                <label className="block font-bold text-slate-700 mb-1">
-                  {t(
-                    lang,
-                    'Annual Family Income (₹)',
-                    'वार्षिक पारिवारिक आय (₹)'
-                  )}
+                <label className="block font-bold text-slate-300 mb-1.5">
+                  {t(lang, 'Annual Family Income (₹)', 'वार्षिक पारिवारिक आय (₹)')}
                 </label>
                 <input
                   type="number"
-                  step={25000}
+                  step={50000}
                   value={familyIncome}
                   onChange={(e) => setFamilyIncome(Number(e.target.value))}
-                  className="w-full rounded-lg border border-slate-300 px-3 py-2 font-mono-tabular font-bold text-slate-900"
+                  className="w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 text-white font-mono-tabular font-bold"
                 />
               </div>
             </div>
           </div>
 
-          {/* Fellowship Output */}
+          {/* Fellowship Result */}
           <div
             className={`p-4 rounded-xl border ${
               fellowshipEligible
-                ? 'bg-blue-50/90 border-blue-300'
-                : 'bg-amber-50/90 border-amber-300'
+                ? 'bg-emerald-950/80 border-emerald-500/40 text-emerald-200'
+                : 'bg-amber-950/80 border-amber-500/40 text-amber-200'
             }`}
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Award className="w-5 h-5 text-blue-800 shrink-0" />
-                <div>
-                  <div className="text-xs font-extrabold text-slate-900">
-                    {fellowshipEligible
-                      ? t(
-                          lang,
-                          'ELIGIBLE FOR BABASAHEB FELLOWSHIP',
-                          'बाबासाहेब शिक्षा फेलोशिप के लिए पात्र'
-                        )
-                      : t(
-                          lang,
-                          'CRITERIA NOT MET (MIN 60% MARKS & INCOME ≤ ₹8L)',
-                          'न्यूनतम 60% अंक एवं आय ≤ ₹8 लाख आवश्यक'
-                        )}
-                  </div>
-                  <div className="text-[11px] text-slate-600">
-                    {t(
-                      lang,
-                      'Includes 1-on-1 Cadre A/C Officer Mentorship',
-                      'संवर्ग A/C के अधिकारियों द्वारा 1-on-1 मेंटरशिप शामिल'
-                    )}
-                  </div>
-                </div>
+                {fellowshipEligible ? (
+                  <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
+                ) : (
+                  <AlertCircle className="w-5 h-5 text-amber-400 shrink-0" />
+                )}
+                <span className="text-xs font-extrabold uppercase tracking-wider">
+                  {fellowshipEligible
+                    ? t(lang, 'Eligible for Coaching Grant', 'कोचिंग फेलोशिप हेतु पात्र')
+                    : t(lang, 'Criteria Below Threshold', 'अर्हता मानक से कम')}
+                </span>
               </div>
-              <span className="text-lg font-mono-tabular font-extrabold text-blue-900">
+              <span className="text-lg font-mono-tabular font-extrabold text-amber-300">
                 {formatINR(fellowshipGrant)}
               </span>
             </div>
+            <p className="text-[11px] text-slate-300 mt-1.5">
+              {fellowshipEligible
+                ? t(
+                    lang,
+                    'Application includes complete tuition waiver at partner institutes + monthly study stipend.',
+                    'अनुदान में पार्टनर संस्थानों में पूरी फीस छूट एवं अध्ययन सामग्री भत्ता शामिल है।'
+                  )
+                : t(
+                    lang,
+                    'Requires min 60% qualifying marks and family income under ₹8 Lakh/year.',
+                    'पात्रता: न्यूनतम 60% अंक एवं पारिवारिक वार्षिक आय ₹8 लाख से कम।'
+                  )}
+            </p>
           </div>
         </div>
       </div>
 
-      {/* Fellowship Mentors Panel */}
-      <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-xs space-y-4">
-        <div className="flex items-center gap-2">
-          <BookOpen className="w-5 h-5 text-blue-800" />
-          <div>
-            <h3 className="text-base font-extrabold text-slate-900">
-              {t(
-                lang,
-                'National Academic & Civil Services Mentorship Board (Cadre A, B & C)',
-                'राष्ट्रीय शैक्षणिक एवं सिविल सेवा मेंटरशिप बोर्ड (संवर्ग A, B एवं C)'
-              )}
-            </h3>
-            <p className="text-xs text-slate-500">
-              {t(
-                lang,
-                'Senior bureaucrats, doctors, and professors volunteering every Sunday to mentor PBSCN students.',
-                'हर रविवार हमारे समाज के छात्र-छात्राओं को निःशुल्क मार्गदर्शन देने वाले वरिष्ठ अधिकारी एवं प्रोफेसर।'
-              )}
-            </p>
-          </div>
+      {/* Mentorship Board Roster */}
+      <div className="space-y-4">
+        <div>
+          <h3 className="text-lg font-extrabold text-white">
+            {t(
+              lang,
+              'Voluntary Mentorship Board (Cadre A & C Senior Leaders)',
+              'स्वैच्छिक मेंटरशिप बोर्ड (संवर्ग A व C के वरिष्ठ मार्गदर्शक)'
+            )}
+          </h3>
+          <p className="text-xs text-slate-400">
+            {t(
+              lang,
+              'Serving bureaucrats and legal luminaries dedicating free Sunday hours to guide community aspirants.',
+              'समुदाय के सेवारत अधिकारी जो हर रविवार मेधावी युवाओं को निःशुल्क व्यक्तिगत मार्गदर्शन देते हैं।'
+            )}
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-          {FELLOWSHIP_MENTORS.map((mentor) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {FELLOWSHIP_MENTORS.map((m, idx) => (
             <div
-              key={mentor.id}
-              className="p-4 rounded-xl border border-slate-200 bg-slate-50/60 flex flex-col justify-between space-y-2"
+              key={idx}
+              className="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-2"
             >
-              <div>
-                <div className="flex items-center justify-between text-[11px] font-mono-tabular font-bold text-blue-800">
-                  <span>Cadre {mentor.cadre}</span>
-                  <span className="flex items-center gap-1 text-amber-700">
-                    <Sparkles className="w-3 h-3" />
-                    {mentor.studentsMentored} Guided
-                  </span>
-                </div>
-                <h4 className="text-sm font-extrabold text-slate-900 mt-1">
-                  {mentor.name}
-                </h4>
-                <p className="text-xs text-slate-600 mt-0.5">
-                  {lang === 'en' ? mentor.roleEn : mentor.role}
-                </p>
+              <div className="w-8 h-8 rounded-lg bg-blue-950 border border-blue-800 text-amber-400 flex items-center justify-center text-xs font-bold font-mono-tabular">
+                0{idx + 1}
               </div>
-              <div className="pt-2 border-t border-slate-200/70 text-[11px] font-semibold text-emerald-800">
-                {mentor.examTrack} · {mentor.district}
-              </div>
+              <h4 className="text-sm font-extrabold text-white">{m.name}</h4>
+              <div className="text-[11px] text-amber-300 font-semibold">{lang === 'en' ? m.roleEn : m.role}</div>
+              <p className="text-xs text-slate-400 leading-relaxed">{m.examTrack} · {m.district} ({m.studentsMentored} {t(lang, 'mentored', 'मार्गदर्शित')})</p>
             </div>
           ))}
         </div>

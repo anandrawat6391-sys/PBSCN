@@ -2,26 +2,53 @@
 
 @layer base {
   :root {
-    --font-display: 'Plus Jakarta Sans', 'Noto Sans Devanagari', sans-serif;
+    --font-display: 'Outfit', 'Plus Jakarta Sans', 'Noto Sans Devanagari', sans-serif;
     --font-sans: 'Plus Jakarta Sans', 'Noto Sans Devanagari', sans-serif;
-    --font-mono: 'JetBrains Mono', 'Plus Jakarta Sans', 'Noto Sans Devanagari', sans-serif;
+    --font-serif: 'Noto Serif Devanagari', 'Cinzel', serif;
+    --font-mono: 'JetBrains Mono', monospace;
   }
 
   body {
     font-family: var(--font-sans);
-    background-color: #F8FAFC;
-    color: #0F172A;
+    background-color: #070B19;
+    color: #F8FAFC;
     overflow-x: hidden;
+    letter-spacing: -0.01em;
   }
 
-  h1, h2, h3, .font-display {
+  h1, h2, h3, h4, .font-display {
     font-family: var(--font-display);
+    letter-spacing: -0.025em;
+  }
+
+  .font-ceremonial {
+    font-family: var(--font-serif);
   }
 
   .font-mono-tabular {
     font-family: var(--font-mono);
     font-variant-numeric: tabular-nums;
   }
+}
+
+/* Custom delicate scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0B1120;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1E293B;
+  border-radius: 9999px;
+  border: 2px solid #0B1120;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
 }
 
 @keyframes spinSlow {
@@ -34,7 +61,7 @@
 }
 
 .animate-dhamma-spin {
-  animation: spinSlow 48s linear infinite;
+  animation: spinSlow 50s linear infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
