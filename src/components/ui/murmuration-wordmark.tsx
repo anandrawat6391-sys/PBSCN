@@ -306,11 +306,11 @@ export default function MurmurationWordmark({
       if (mc) {
         mc.font = "900 100px " + fontFamily;
         const wordW = mc.measureText(word || " ").width || 1;
-        const size = Math.min(((w * 0.58) / wordW) * 100, (h * 0.32) / 0.72);
+        const size = Math.min(((w * 0.44) / wordW) * 100, (h * 0.22) / 0.72);
         mc.font = "900 " + size + "px " + fontFamily;
         mc.textAlign = "center";
         mc.textBaseline = "middle";
-        mc.fillText(word || " ", w / 2, h * 0.38);
+        mc.fillText(word || " ", w / 2, h * 0.28);
         const img = mc.getImageData(0, 0, w, h).data;
         const step = Math.max(2, Math.round(Math.sqrt((w * h) / 90000)));
         for (let y = 0; y < h; y += step) {

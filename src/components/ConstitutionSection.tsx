@@ -102,17 +102,17 @@ export const ConstitutionSection: React.FC<ConstitutionSectionProps> = ({
 
   return (
     <div className="space-y-8">
-      {/* Sovereign Header */}
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      {/* Sovereign Header in Tactile Cream-White Alabaster */}
+      <div className="rounded-3xl bg-[#FCFAF7] border border-[#E7E2DA] p-6 sm:p-8 shadow-[10px_10px_25px_rgba(0,0,0,0.05),-8px_-8px_20px_rgba(255,255,255,0.95)] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="text-xs font-bold uppercase tracking-wider text-amber-400">
+          <div className="text-xs font-extrabold uppercase tracking-wider text-amber-700">
             {t(
               lang,
               'Supreme Governing Charter of PBSCN',
               'प्रबुद्ध भारत स्वाभिमान न्यास की सर्वोच्च नियमावली'
             )}
           </div>
-          <MarkerText as="h2" className="text-xl sm:text-2xl font-extrabold text-white mt-1">
+          <MarkerText as="h2" className="text-xl sm:text-2xl font-extrabold text-stone-900 tracking-tight mt-1">
             {lang === 'en' ? (
               <>
                 The 22-Article Constitution <Mark type="underline" color="#f59e0b">(Niyamawali)</Mark>
@@ -123,10 +123,10 @@ export const ConstitutionSection: React.FC<ConstitutionSectionProps> = ({
               </>
             )}
           </MarkerText>
-          <MarkerText as="p" className="text-xs text-slate-300 mt-1 max-w-2xl leading-relaxed">
+          <MarkerText as="p" className="text-xs sm:text-sm text-stone-600 mt-1 max-w-2xl leading-relaxed font-medium">
             {lang === 'en' ? (
               <>
-                Transparent, legally bound principles under <Mark type="highlight" color="#1e3a8a">Indian Trusts Act 1882</Mark> ensuring 100% direct peer-to-peer solidarity with <Mark type="strike" color="#ef4444">zero leakages</Mark>.
+                Transparent, legally bound principles under <Mark type="highlight" color="#fef3c7">Indian Trusts Act 1882</Mark> ensuring 100% direct peer-to-peer solidarity with <Mark type="strike" color="#ef4444">zero leakages</Mark>.
               </>
             ) : (
               <>
@@ -137,11 +137,13 @@ export const ConstitutionSection: React.FC<ConstitutionSectionProps> = ({
         </div>
       </div>
 
-      {/* Interactive Compliance Simulator */}
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
-        <div className="flex items-center gap-2.5 border-b border-slate-800 pb-3">
-          <Scale className="w-5 h-5 text-amber-400" />
-          <h3 className="text-base font-extrabold text-white">
+      {/* Interactive Compliance Simulator (Cream-White / Warm-Gray) */}
+      <div className="rounded-3xl bg-[#FCFAF7] border border-[#E7E2DA] p-6 sm:p-7 shadow-[10px_10px_25px_rgba(0,0,0,0.05),-8px_-8px_20px_rgba(255,255,255,0.95)] space-y-5">
+        <div className="flex items-center gap-2.5 border-b border-[#ECE7DE] pb-3.5">
+          <div className="w-8 h-8 rounded-xl bg-amber-100 border border-amber-300 flex items-center justify-center text-amber-800 shadow-2xs">
+            <Scale className="w-4 h-4 text-amber-700" />
+          </div>
+          <h3 className="text-base font-extrabold text-stone-900">
             {t(
               lang,
               'Interactive Constitutional Compliance Simulator',
@@ -151,8 +153,8 @@ export const ConstitutionSection: React.FC<ConstitutionSectionProps> = ({
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 text-xs">
-          <div>
-            <label className="block font-bold text-slate-300 mb-1">
+          <div className="p-3.5 rounded-2xl bg-white border border-[#E7E2DA] shadow-2xs space-y-1.5">
+            <label className="block font-extrabold text-stone-800">
               {t(lang, `Member Age: ${simAge} Yrs`, `सदस्य की आयु: ${simAge} वर्ष`)}
             </label>
             <input
@@ -161,17 +163,17 @@ export const ConstitutionSection: React.FC<ConstitutionSectionProps> = ({
               max={65}
               value={simAge}
               onChange={(e) => setSimAge(Number(e.target.value))}
-              className="w-full accent-amber-400 cursor-pointer"
+              className="w-full accent-amber-500 cursor-pointer"
             />
-            <div className="flex justify-between text-[10px] text-slate-400 font-mono-tabular">
+            <div className="flex justify-between text-[10px] text-stone-500 font-mono-tabular">
               <span>18 (Min)</span>
               <span>60 (Max Reg)</span>
               <span>62 (Cap)</span>
             </div>
           </div>
 
-          <div>
-            <label className="block font-bold text-slate-300 mb-1">
+          <div className="p-3.5 rounded-2xl bg-white border border-[#E7E2DA] shadow-2xs space-y-1.5">
+            <label className="block font-extrabold text-stone-800">
               {t(lang, `Tenure: ${simMonths} Months`, `सदस्यता: ${simMonths} माह`)}
             </label>
             <input
@@ -180,17 +182,17 @@ export const ConstitutionSection: React.FC<ConstitutionSectionProps> = ({
               max={36}
               value={simMonths}
               onChange={(e) => setSimMonths(Number(e.target.value))}
-              className="w-full accent-amber-400 cursor-pointer"
+              className="w-full accent-amber-500 cursor-pointer"
             />
-            <div className="flex justify-between text-[10px] text-slate-400 font-mono-tabular">
+            <div className="flex justify-between text-[10px] text-stone-500 font-mono-tabular">
               <span>0M</span>
               <span>18M (Lock-in)</span>
               <span>36M</span>
             </div>
           </div>
 
-          <div>
-            <label className="block font-bold text-slate-300 mb-1">
+          <div className="p-3.5 rounded-2xl bg-white border border-[#E7E2DA] shadow-2xs space-y-1.5">
+            <label className="block font-extrabold text-stone-800">
               {t(lang, `Appeals Completed (${simAppealsDone}/${simTotalAppeals})`, `सहयोग किया (${simAppealsDone}/${simTotalAppeals})`)}
             </label>
             <input
@@ -199,78 +201,87 @@ export const ConstitutionSection: React.FC<ConstitutionSectionProps> = ({
               max={simTotalAppeals}
               value={simAppealsDone}
               onChange={(e) => setSimAppealsDone(Number(e.target.value))}
-              className="w-full accent-amber-400 cursor-pointer"
+              className="w-full accent-amber-500 cursor-pointer"
             />
-            <div className="flex justify-between text-[10px] text-slate-400 font-mono-tabular">
+            <div className="flex justify-between text-[10px] text-stone-500 font-mono-tabular">
               <span>0%</span>
               <span>90% (Mandatory)</span>
               <span>100%</span>
             </div>
           </div>
 
-          <div>
-            <label className="block font-bold text-slate-300 mb-1">
+          <div className="p-3.5 rounded-2xl bg-white border border-[#E7E2DA] shadow-2xs space-y-1">
+            <label className="block font-extrabold text-stone-800">
               {t(lang, 'Sahyog Ratio', 'सहयोग अनुपात')}
             </label>
-            <div className="text-xl font-mono-tabular font-extrabold text-amber-300 pt-1">
+            <div className="text-2xl font-mono-tabular font-black text-stone-900 pt-0.5">
               {participationRate}%
             </div>
-            <div className="text-[10px] text-slate-400">
-              {passes90Rule ? t(lang, 'Above 90% Rule ✓', '90% नियम पूर्ण ✓') : t(lang, 'Below 90% Rule ✗', '90% से कम ✗')}
+            <div className="text-[11px] font-bold">
+              {passes90Rule ? (
+                <span className="text-emerald-700">{t(lang, 'Above 90% Rule ✓', '90% नियम पूर्ण ✓')}</span>
+              ) : (
+                <span className="text-rose-600">{t(lang, 'Below 90% Rule ✗', '90% से कम ✗')}</span>
+              )}
             </div>
           </div>
 
-          <div className="flex items-center gap-2 pt-4">
-            <input
-              id="sim-fee"
-              type="checkbox"
-              checked={simShulkPaid}
-              onChange={(e) => setSimShulkPaid(e.target.checked)}
-              className="w-4 h-4 accent-amber-400 rounded cursor-pointer"
-            />
-            <label htmlFor="sim-fee" className="font-bold text-slate-300 cursor-pointer">
-              {t(lang, 'Annual Fee Active', 'व्यवस्था शुल्क जमा है')}
-            </label>
+          <div className="p-3.5 rounded-2xl bg-white border border-[#E7E2DA] shadow-2xs flex flex-col justify-center">
+            <div className="flex items-center gap-2">
+              <input
+                id="sim-fee"
+                type="checkbox"
+                checked={simShulkPaid}
+                onChange={(e) => setSimShulkPaid(e.target.checked)}
+                className="w-4 h-4 accent-amber-500 rounded cursor-pointer"
+              />
+              <label htmlFor="sim-fee" className="font-extrabold text-stone-800 text-xs cursor-pointer">
+                {t(lang, 'Annual Fee Active', 'व्यवस्था शुल्क जमा है')}
+              </label>
+            </div>
+            <p className="text-[10px] text-stone-500 mt-1">
+              {t(lang, 'Portal server & audit compliance', 'पोर्टल एवं ऑडिट संधारण')}
+            </p>
           </div>
         </div>
 
-        {/* Compliance Result Box */}
+        {/* Compliance Result Box in Cream / Alabaster */}
         <div
-          className={`p-4 rounded-xl border ${
+          className={`p-4 rounded-2xl border transition-all ${
             isFullyEligible
-              ? 'bg-emerald-950/80 border-emerald-500/40 text-emerald-200'
-              : 'bg-amber-950/80 border-amber-500/40 text-amber-200'
+              ? 'bg-emerald-50 border-emerald-300 text-emerald-950 shadow-2xs'
+              : 'bg-amber-50 border-amber-300 text-amber-950 shadow-2xs'
           }`}
         >
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2.5">
             {isFullyEligible ? (
-              <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
+              <CheckCircle2 className="w-5 h-5 text-emerald-700 shrink-0" />
             ) : (
-              <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0" />
+              <AlertTriangle className="w-5 h-5 text-amber-700 shrink-0" />
             )}
-            <span className="text-xs font-extrabold uppercase tracking-wider">
+            <span className="text-xs font-black uppercase tracking-wider">
               {isFullyEligible
                 ? t(lang, 'FULL CONSTITUTIONAL COMPLIANCE CERTIFIED', 'संवैधानिक पात्रता पूर्ण एवं प्रमाणित')
                 : t(lang, 'COMPLIANCE CRITERIA PENDING', 'संवैधानिक शर्तें अभी अधूरी हैं')}
             </span>
           </div>
-          <p className="text-xs text-slate-300 mt-1 leading-relaxed">{statusReason}</p>
+          <p className="text-xs text-stone-700 mt-1.5 leading-relaxed font-medium">{statusReason}</p>
         </div>
       </div>
 
-      {/* Category Pills & Search */}
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
-          <div className="flex flex-wrap items-center gap-1.5">
+      {/* Category Pills & Search in Clean Cream-White Aesthetic */}
+      <div className="rounded-3xl bg-[#FCFAF7] border border-[#E7E2DA] p-6 shadow-[10px_10px_25px_rgba(0,0,0,0.05),-8px_-8px_20px_rgba(255,255,255,0.95)] space-y-6">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+          <div className="flex flex-wrap items-center gap-2">
             {categories.map((cat) => (
               <button
                 key={cat.id}
                 type="button"
                 onClick={() => setCategoryFilter(cat.id)}
-                className={`px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer ${
+                className={`px-3.5 py-2 rounded-xl text-xs font-extrabold transition-all cursor-pointer ${
                   categoryFilter === cat.id
-                    ? 'bg-blue-600 text-white shadow-sm font-extrabold'
-                    : 'bg-slate-950 text-slate-400 hover:text-white border border-slate-800'
+                    ? 'bg-amber-400 text-stone-950 shadow-sm border border-amber-400'
+                    : 'bg-white text-stone-700 hover:text-stone-950 border border-stone-200/90 shadow-2xs hover:bg-stone-50'
                 }`}
               >
                 {lang === 'en' ? cat.labelEn : cat.labelHi}
@@ -278,43 +289,45 @@ export const ConstitutionSection: React.FC<ConstitutionSectionProps> = ({
             ))}
           </div>
 
-          <div className="w-full sm:w-64 relative">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+          <div className="w-full sm:w-72 relative">
+            <Search className="w-4 h-4 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={t(lang, 'Search 22 articles...', '22 नियम खोजें...')}
-              className="w-full pl-9 pr-3 py-2 rounded-xl border border-slate-700 bg-slate-950 text-white placeholder-slate-500 focus:border-blue-500 focus:outline-none"
+              className="w-full pl-9 pr-3.5 py-2.5 rounded-xl border border-stone-300 bg-white text-stone-900 placeholder:text-stone-400 shadow-2xs font-medium focus:border-amber-500 focus:outline-none"
             />
           </div>
         </div>
 
-        {/* 22 Articles List */}
+        {/* 22 Articles List in Clean Cream-White Tactile Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {filteredArticles.map((art) => (
             <div
               key={art.articleNumber}
-              className="p-5 rounded-2xl bg-slate-950 border border-slate-800/80 hover:border-blue-700/60 transition-all space-y-2"
+              className="p-5 rounded-3xl bg-white border border-[#E7E2DA] shadow-[4px_4px_14px_rgba(0,0,0,0.04),-3px_-3px_10px_rgba(255,255,255,0.9)] hover:shadow-[10px_10px_24px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between space-y-3"
             >
-              <div className="flex items-center justify-between">
-                <span className="px-2.5 py-0.5 rounded text-[10px] font-mono-tabular font-extrabold bg-blue-950 text-blue-300 border border-blue-800">
-                  {t(lang, `Article ${art.articleNumber}`, `अनुच्छेद ${art.articleNumber}`)}
-                </span>
-                <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
-                  {art.category}
-                </span>
+              <div className="space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <span className="px-3 py-1 rounded-full text-[11px] font-mono-tabular font-extrabold bg-stone-100 text-stone-700 border border-stone-200 shadow-2xs">
+                    {t(lang, `Article ${art.articleNumber}`, `अनुच्छेद ${art.articleNumber}`)}
+                  </span>
+                  <span className="text-[10px] font-extrabold text-amber-700 uppercase tracking-wider">
+                    {art.category}
+                  </span>
+                </div>
+
+                <h4 className="text-sm font-extrabold text-stone-900 leading-snug tracking-tight">
+                  {lang === 'en' ? art.titleEn : art.titleHi}
+                </h4>
+
+                <p className="text-xs text-stone-600 leading-relaxed font-medium">
+                  {lang === 'en' ? art.summaryEn : art.summaryHi}
+                </p>
               </div>
 
-              <h4 className="text-sm font-extrabold text-white">
-                {lang === 'en' ? art.titleEn : art.titleHi}
-              </h4>
-
-              <p className="text-xs text-slate-300 leading-relaxed">
-                {lang === 'en' ? art.summaryEn : art.summaryHi}
-              </p>
-
-              <div className="mt-2 pt-2 border-t border-slate-800/60 text-[11px] font-mono-tabular text-amber-300 font-semibold">
+              <div className="mt-2 pt-2.5 border-t border-[#ECE7DE] text-[11px] font-mono-tabular text-amber-900 font-bold bg-amber-50/80 p-2.5 rounded-xl border border-amber-200/70">
                 {art.clauseRule}
               </div>
             </div>

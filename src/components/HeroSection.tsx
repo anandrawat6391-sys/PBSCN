@@ -77,17 +77,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           {/* Hero Bottom Overlay: Main Title, Dignified Description & CTA */}
           <div className="absolute bottom-6 left-4 sm:left-8 right-4 sm:right-8 pointer-events-none">
             <div className="max-w-4xl mx-auto flex flex-col items-center text-center space-y-3 pointer-events-auto">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-900/60 border border-blue-400/30 text-blue-200 text-xs font-semibold backdrop-blur-md">
-                <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-                <span>
-                  {t(
-                    lang,
-                    '4,600 Starlings in Dynamic Flight Converge into "JAI BHIM"',
-                    '4,600 संगठित परिंदे गगन में रचते हैं: "जय भीम"'
-                  )}
-                </span>
-              </div>
-
               <MarkerText as="h1" className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white drop-shadow-md">
                 {lang === 'en' ? (
                   <>
